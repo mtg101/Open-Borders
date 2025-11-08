@@ -23,7 +23,6 @@ ANIMATE_MAIN:
 VBLANK_PERIOD_WORK:		
 
 	; OK so this is just guesswork and fiddling now... 
-
 	push af
 	push bc
 	push de
@@ -31,17 +30,17 @@ VBLANK_PERIOD_WORK:
 
 	LD		B, 120
 VBLANK_LOOP:
-	DJNZ	VBLANK_LOOP				; 13 ts (8 final time)
+	DJNZ	VBLANK_LOOP				
 
 	; fiddling...
-	LD	A, 9
+	LD	A, 7
 	NOP
 	NOP
 
-	 pop hl
-	 pop de
-	 pop bc
-	 pop af
+	pop hl
+	pop de
+	pop bc
+	pop af
 
 	ret								; VBLANK_PERIOD_WORK
 									
@@ -53,18 +52,19 @@ INITIAL_SETUP:
 	ld 		A, COL_BLK				; black border
 	OUT		($FE), A				; set border black
 
-	ret								; INITIAL_SETUP
-
-
-; prepare evenrything, incuding CMS, during main screen draw
-SETUP_DURING_SCREEN_DRAW: 
 	LD		A, COL_RED				
 	LD		B, COL_BLU				
-	LD		C, $FE					; border OUT addr, plus also not-bright-yellow!
+	LD		C, $FE					; border OUT addr
 	LD		D, COL_GRN			
 	LD		E, COL_CYN			
 	LD		H, COL_WHT			
 	LD		L, COL_BLK
+
+	ret								; INITIAL_SETUP
+
+
+; prepare evenrything, incuding SMC, during main screen draw
+SETUP_DURING_SCREEN_DRAW: 
 
 	RET								; SETUP_DURING_SCREEN_DRAW
 
