@@ -4,14 +4,69 @@
 	
 
 	INCLUDE "speccy_defs.asm"		; must be indented
+	INCLUDE "ob_top_border_render.asm"
 	
 START:
 	call	INITIALISE_INTERRUPT	; IM2 with ROM trick
+	call	INITIAL_SETUP			; border black, any other set up
 
 ANIMATE_MAIN:
-	halt							; wait for vsync before draw
+	call	SETUP_DURING_SCREEN_DRAW; prepare evenrything, incuding CMS, during main screen draw
 
+	halt							; wait for vsync (fired after bottom border, start of vblank)
+
+	call	VBLANK_PERIOD_WORK		; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
+	call	TOP_BORDER_RENDER		; timining-critical flipping of top border colours
 	jr		ANIMATE_MAIN
+
+; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
+VBLANK_PERIOD_WORK:		
+
+	; OK so this is just guesswork and fiddling now... 
+
+	push af
+	push bc
+	push de
+	push hl
+
+	LD		B, 120
+VBLANK_LOOP:
+	DJNZ	VBLANK_LOOP				; 13 ts (8 final time)
+
+	; fiddling...
+	LD	A, 9
+	NOP
+	NOP
+
+	 pop hl
+	 pop de
+	 pop bc
+	 pop af
+
+	ret								; VBLANK_PERIOD_WORK
+									
+
+
+
+; border black and other set up
+INITIAL_SETUP:
+	ld 		A, COL_BLK				; black border
+	OUT		($FE), A				; set border black
+
+	ret								; INITIAL_SETUP
+
+
+; prepare evenrything, incuding CMS, during main screen draw
+SETUP_DURING_SCREEN_DRAW: 
+	LD		A, COL_RED				
+	LD		B, COL_BLU				
+	LD		C, $FE
+	LD		D, COL_GRN			
+	LD		E, COL_CYN			
+	LD		H, COL_YEL			
+	LD		L, COL_BLK
+
+	RET								; SETUP_DURING_SCREEN_DRAW
 
 
 ; set up IM2 - so we don't wate time scanning keyboard and so on
@@ -29,7 +84,7 @@ INITIALISE_INTERRUPT:
 	ld		i, a                    ; Set the interrupt register to that page
 	im		2                       ; Set the interrupt mode
 	ei                              ; Enable interrupts
-	ret								; Initialise_Interrupt
+	ret								; INITIALISE_INTERRUPT
  
 INTERRUPT:              
 	; push af                       ; save all the registers on the stack
@@ -46,15 +101,7 @@ INTERRUPT:
 	; push iy
 
 
-; static border
- 	; ld		a, COL_BLK
- 	; out		($FE), a
-
-	; .3480 nop
-
- 	; ld		a, COL_BLU
- 	; out		($FE), a
-
+; do stuff
 
 	; pop iy                        ; restore all the registers
 	; pop hl

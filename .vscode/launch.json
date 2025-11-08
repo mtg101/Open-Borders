@@ -12,7 +12,7 @@
             },
             "sjasmplus": [
                 {
-                    "path": "speccy_train.sld"
+                    "path": "open_borders.sld"
                 }
             ],
             "history": {
@@ -25,8 +25,8 @@
             ],
             "rootFolder": "${workspaceFolder}",
             // "topOfStack": "stack_top",
-            "load": "speccy_train.sna",
-            //"load": "speccy_train.nex",
+            "load": "open_borders.sna",
+            //"load": "open_borders.nex",
             "smallValuesMaximum": 513,
             "tmpDir": ".tmp"
         },
@@ -38,7 +38,7 @@
             "remoteType": "cspect",
             "sjasmplus": [
                 {
-                    "path": "speccy_train.sld"
+                    "path": "open_borders.sld"
                 }
             ],
             "history": {
@@ -50,8 +50,8 @@
             ],
             "rootFolder": "${workspaceFolder}",
             // "topOfStack": "stack_top",
-            "load": "speccy_train.sna",
-            //"load": "speccy_train.nex",
+            "load": "open_borders.sna",
+            //"load": "open_borders.nex",
             "smallValuesMaximum": 513,
             "tmpDir": ".tmp"
         },
@@ -63,7 +63,7 @@
             "remoteType": "zrcp",
             "sjasmplus": [
                 {
-                    "path": "speccy_train.sld"
+                    "path": "open_borders.sld"
                 }
             ],
             "history": {
@@ -75,8 +75,8 @@
             ],
             "rootFolder": "${workspaceFolder}",
             // "topOfStack": "stack_top",
-            "load": "speccy_train.sna",
-            //"load": "speccy_train.nex",
+            "load": "open_borders.sna",
+            //"load": "open_borders.nex",
             "smallValuesMaximum": 513,
             "tmpDir": ".tmp"
         },
@@ -91,7 +91,7 @@
             },
             "sjasmplus": [
                 {
-                    "path": "speccy_train.sld"
+                    "path": "open_borders.sld"
                 }
             ],
             "history": {
@@ -102,8 +102,8 @@
             "commandsAfterLaunch": [],
             "rootFolder": "${workspaceFolder}",
             // "topOfStack": "stack_top",
-            "load": "speccy_train.sna",
-            //"load": "speccy_train.nex",
+            "load": "open_borders.sna",
+            //"load": "open_borders.nex",
             "smallValuesMaximum": 513,
             "tmpDir": ".tmp"
         },
@@ -118,14 +118,14 @@
             },
             "sjasmplus": [
                 {
-                    "path": "speccy_train.sld"
+                    "path": "open_borders.sld"
                 }
             ],
             "startAutomatically": false,
             "commandsAfterLaunch": [],
             "rootFolder": "${workspaceFolder}",
             // "topOfStack": "stack_top",
-            "load": "speccy_train.sna",
+            "load": "open_borders.sna",
             "smallValuesMaximum": 513,
             "tmpDir": ".tmp"
         },
@@ -146,12 +146,12 @@
             },
             "sjasmplus": [
                 {
-                    "path": "speccy_train.sld"
+                    "path": "open_borders.sld"
                 }
             ],
             "startAutomatically": true,
             "rootFolder": "${workspaceFolder}",
-            "load": "speccy_train.nex"
+            "load": "open_borders.nex"
         }
 
     ]
