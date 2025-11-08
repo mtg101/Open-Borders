@@ -6,10 +6,10 @@
             "type": "shell",
             "command": "sjasmplus", // Please add the full path to sjasmplus
             "args": [
-                "--sld=speccy_train.sld",
+                "--sld=open_borders.sld",
                 "--fullpath",
                 "--lst",
-                "train_main.asm"
+                "ob_main.asm"
             ],
             "problemMatcher": {
                 "owner": "sjasmplus",
