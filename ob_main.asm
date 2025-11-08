@@ -60,10 +60,10 @@ INITIAL_SETUP:
 SETUP_DURING_SCREEN_DRAW: 
 	LD		A, COL_RED				
 	LD		B, COL_BLU				
-	LD		C, $FE
+	LD		C, $FE					; border OUT addr, plus also not-bright-yellow!
 	LD		D, COL_GRN			
 	LD		E, COL_CYN			
-	LD		H, COL_YEL			
+	LD		H, COL_WHT			
 	LD		L, COL_BLK
 
 	RET								; SETUP_DURING_SCREEN_DRAW
