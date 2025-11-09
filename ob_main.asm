@@ -1,12 +1,13 @@
 	SLDOPT COMMENT WPMEM, LOGPOINT, ASSERTION	; for VSCODE and debugging
 	DEVICE ZXSPECTRUM48 			; needed for SNA export (must be tab indented)
-	org $8000						; the uncontended 32KiB
+	ORG 	$8000					; the uncontended 32KiB
 	
 
 	INCLUDE "speccy_defs.asm"		; must be indented
 	INCLUDE "ob_top_border_render.asm"
 	INCLUDE "ob_buffer.asm"
 	INCLUDE "ob_font.asm"
+	INCLUDE "ob_image.asm"
 	
 START:
 	call	INITIALISE_INTERRUPT	; IM2 with ROM trick
