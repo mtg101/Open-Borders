@@ -50,13 +50,13 @@ INITIAL_SETUP:
 	ld 		A, COL_BLK				; black border
 	OUT		($FE), A				; set border black
 
-	LD		A, COL_RED				
-	LD		B, COL_BLU				
+	LD		A, COL_BLK				
+	LD		B, COL_RED				
 	LD		C, $FE					; border OUT addr
 	LD		D, COL_GRN			
 	LD		E, COL_CYN			
 	LD		H, COL_WHT			
-	LD		L, COL_BLK
+	LD		L, COL_BLU
 
 	ret								; INITIAL_SETUP
 
