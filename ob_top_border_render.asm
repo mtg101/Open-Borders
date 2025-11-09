@@ -1016,11 +1016,15 @@ TOP_BORDER_RENDER:
                     ; and need time to make border nack to black
 
     PUSH    AF
-    LD      A, 0
+    LD      A, COL_BLK
     OUT     (C), A  ; set back to black
     POP     AF 
 
 	ret								; TOP_BORDER_RENDER
 
+; self-modify registers used in render based on buffer
+RENDER_SMC:
 
+
+    RET                ; RENDER_SMC
 

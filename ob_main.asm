@@ -5,6 +5,8 @@
 
 	INCLUDE "speccy_defs.asm"		; must be indented
 	INCLUDE "ob_top_border_render.asm"
+	INCLUDE "ob_buffer.asm"
+	INCLUDE "ob_font.asm"
 	
 START:
 	call	INITIALISE_INTERRUPT	; IM2 with ROM trick
@@ -21,7 +23,6 @@ ANIMATE_MAIN:
 
 ; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
 VBLANK_PERIOD_WORK:		
-
 	; OK so this is just guesswork and fiddling now... 
 	push af
 	push bc
@@ -44,9 +45,6 @@ VBLANK_LOOP:
 
 	ret								; VBLANK_PERIOD_WORK
 									
-
-
-
 ; border black and other set up
 INITIAL_SETUP:
 	ld 		A, COL_BLK				; black border
@@ -62,9 +60,32 @@ INITIAL_SETUP:
 
 	ret								; INITIAL_SETUP
 
-
 ; prepare evenrything, incuding SMC, during main screen draw
 SETUP_DURING_SCREEN_DRAW: 
+    PUSH 	AF
+	LD 		A, (MAIN_FRAME)
+	AND   	%00000001
+	JR   	NZ, MAIN_FRAME_1
+
+	CALL 	BUFFER_QUEUE			; add new char if needed
+	CALL 	BUFFER_SCROLL			; scroll buffer
+
+    ; LD      A, COL_MAG
+    ; OUT     (C), A  				; set border to show how much time left
+
+	JR 		MAIN_FRAME_DONE
+MAIN_FRAME_1:
+	CALL	RENDER_SMC				; self-modify the rendering registers from the buffer
+
+    ; LD      A, COL_GRN
+    ; OUT     (C), A  				; set border to show how much time left
+
+MAIN_FRAME_DONE:
+	LD 		A, (MAIN_FRAME)
+	INC 	A
+	LD 		(MAIN_FRAME), A
+
+	POP 	AF
 
 	RET								; SETUP_DURING_SCREEN_DRAW
 
@@ -117,6 +138,9 @@ INTERRUPT:
 	; pop af
 	ei                               ; Enable interrupts
 	ret                              ; INTERRUPT
+
+MAIN_FRAME:
+	DEFB 		0
 
 ; Deployment: Snapshot
    SAVESNA 	"open_borders.sna", START
