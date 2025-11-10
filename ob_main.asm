@@ -7,7 +7,6 @@
 	INCLUDE "ob_top_border_render.asm"
 	INCLUDE "ob_buffer.asm"
 	INCLUDE "ob_font.asm"
-	INCLUDE "ob_image.asm"
 	
 START:
 	call	INITIALISE_INTERRUPT	; IM2 with ROM trick
@@ -142,6 +141,9 @@ INTERRUPT:
 
 MAIN_FRAME:
 	DEFB 		0
+
+; include specific memory areas
+	INCLUDE "ob_image.asm"
 
 ; Deployment: Snapshot
    SAVESNA 	"open_borders.sna", START
