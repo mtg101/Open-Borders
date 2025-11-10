@@ -8,7 +8,7 @@ BUFFER_SCROLL:
     PUSH        DE
     PUSH        HL
 
-    LD          B, 56               ; 56 rows
+    LD          B, 8                ; 8 rows (just for pixels, get made taller during render)
     LD          DE, BUFFER_ROWS     ; start of buffer to copy to
     LD          HL, BUFFER_ROWS + 1 ; offset buffer to copy from
 BUFFER_SCROLL_LOOP:
@@ -82,118 +82,8 @@ BUFFER_MESSAGE_INDEX:
 ; need 5th for offscreen buffer
 ; so 5 chars, each 4 wide
 ; = 20 bytes per row
-; 56 border rows
-; = 1,120b memory used
+; 8 rows (of 7 pixels each, rendered separately)
+; buffer = 160 bytes
+
 BUFFER_ROWS:
-BUFFER_ROW_1:
-    DEFS    20
-BUFFER_ROW_2:
-    DEFS    20
-BUFFER_ROW_3:
-    DEFS    20
-BUFFER_ROW_4:
-    DEFS    20
-BUFFER_ROW_5:
-    DEFS    20
-BUFFER_ROW_6:
-    DEFS    20
-BUFFER_ROW_7:
-    DEFS    20
-BUFFER_ROW_8:
-    DEFS    20
-BUFFER_ROW_9:
-    DEFS    20
-BUFFER_ROW_10:
-    DEFS    20
-BUFFER_ROW_11:
-    DEFS    20
-BUFFER_ROW_12:
-    DEFS    20
-BUFFER_ROW_13:
-    DEFS    20
-BUFFER_ROW_14:
-    DEFS    20
-BUFFER_ROW_15:
-    DEFS    20
-BUFFER_ROW_16:
-    DEFS    20
-BUFFER_ROW_17:
-    DEFS    20
-BUFFER_ROW_18:
-    DEFS    20
-BUFFER_ROW_19:
-    DEFS    20
-BUFFER_ROW_20:
-    DEFS    20
-BUFFER_ROW_21:
-    DEFS    20
-BUFFER_ROW_22:
-    DEFS    20
-BUFFER_ROW_23:
-    DEFS    20
-BUFFER_ROW_24:
-    DEFS    20
-BUFFER_ROW_25:
-    DEFS    20
-BUFFER_ROW_26:
-    DEFS    20
-BUFFER_ROW_27:
-    DEFS    20
-BUFFER_ROW_28:
-    DEFS    20
-BUFFER_ROW_29:
-    DEFS    20
-BUFFER_ROW_30:
-    DEFS    20
-BUFFER_ROW_31:
-    DEFS    20
-BUFFER_ROW_32:
-    DEFS    20
-BUFFER_ROW_33:
-    DEFS    20
-BUFFER_ROW_34:
-    DEFS    20
-BUFFER_ROW_35:
-    DEFS    20
-BUFFER_ROW_36:
-    DEFS    20
-BUFFER_ROW_37:
-    DEFS    20
-BUFFER_ROW_38:
-    DEFS    20
-BUFFER_ROW_39:
-    DEFS    20
-BUFFER_ROW_40:
-    DEFS    20
-BUFFER_ROW_41:
-    DEFS    20
-BUFFER_ROW_42:
-    DEFS    20
-BUFFER_ROW_43:
-    DEFS    20
-BUFFER_ROW_44:
-    DEFS    20
-BUFFER_ROW_45:
-    DEFS    20
-BUFFER_ROW_46:
-    DEFS    20
-BUFFER_ROW_47:
-    DEFS    20
-BUFFER_ROW_48:
-    DEFS    20
-BUFFER_ROW_49:
-    DEFS    20
-BUFFER_ROW_50:
-    DEFS    20
-BUFFER_ROW_51:
-    DEFS    20
-BUFFER_ROW_52:
-    DEFS    20
-BUFFER_ROW_53:
-    DEFS    20
-BUFFER_ROW_54:
-    DEFS    20
-BUFFER_ROW_55:
-    DEFS    20
-BUFFER_ROW_56:
-    DEFS    20
+    DEFS    160
