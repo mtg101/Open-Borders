@@ -241,6 +241,202 @@ BUFFER_DONE_CHAR:
 
 ; renders pixel buffer to render buffer
 BUFFER_RENDER:
+    PUSH        AF
+    PUSH        BC
+    PUSH        DE
+    PUSH        HL
+
+    ; thick row 1/8
+    LD          HL, PIXEL_BUFFER_ROWS
+    LD          DE, RENDER_BUFFER_ROWS
+
+    .15 LDI                             ; all 15 visible bars - row 1/7
+
+    LD          HL, PIXEL_BUFFER_ROWS   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 2/7
+
+    LD          HL, PIXEL_BUFFER_ROWS   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 3/7
+
+    LD          HL, PIXEL_BUFFER_ROWS   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 4/7
+
+    LD          HL, PIXEL_BUFFER_ROWS   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 5/7
+
+    LD          HL, PIXEL_BUFFER_ROWS   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 6/7
+
+    LD          HL, PIXEL_BUFFER_ROWS   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 7/7
+
+    ; thick row 2/8
+    LD          HL, PIXEL_BUFFER_ROWS + 20  ; 20 pixels per row in pixel buffer
+
+    .15 LDI                             ; all 15 visible bars - row 1/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + 20   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 2/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + 20   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 3/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + 20   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 4/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + 20   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 5/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + 20   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 6/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + 20   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 7/7
+
+    ; thick row 3/8
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)  ; 20 pixels per row in pixel buffer
+
+    .15 LDI                             ; all 15 visible bars - row 1/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 2/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 3/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 4/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 5/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 6/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 7/7
+
+    ; thick row 4/8
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)  ; 20 pixels per row in pixel buffer
+
+    .15 LDI                             ; all 15 visible bars - row 1/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 2/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 3/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 4/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 5/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 6/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 7/7
+
+    ; thick row 5/8
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)  ; 20 pixels per row in pixel buffer
+
+    .15 LDI                             ; all 15 visible bars - row 1/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 2/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)  ; reset source
+    .15 LDI                             ; all 15 visible bars - row 3/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 4/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 5/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 6/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 7/7
+
+    ; thick row 6/8
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)  ; 20 pixels per row in pixel buffer
+
+    .15 LDI                             ; all 15 visible bars - row 1/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 2/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 3/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 4/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 5/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 6/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 7/7
+
+    ; thick row 7/8
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)  ; 20 pixels per row in pixel buffer
+
+    .15 LDI                             ; all 15 visible bars - row 1/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 2/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 3/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 4/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 5/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 6/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 7/7
+
+    ; thick row 8/8
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)  ; 20 pixels per row in pixel buffer
+
+    .15 LDI                             ; all 15 visible bars - row 1/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 2/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 3/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 4/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 5/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 6/7
+
+    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)   ; reset source
+    .15 LDI                             ; all 15 visible bars - row 7/7
+
+
+    POP         HL
+    POP         DE
+    POP         BC
+    POP         AF
+
     RET                             ; BUFFER_RENDER
 
 

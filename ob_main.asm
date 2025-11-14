@@ -35,8 +35,9 @@ VBLANK_LOOP:
 
 	; fiddling...
 	LD	A, 7
-	NOP
-	NOP
+	LD	A, 7
+	;NOP
+	;NOP
 
 	pop hl
 	pop de
@@ -64,22 +65,49 @@ INITIAL_SETUP:
 SETUP_DURING_SCREEN_DRAW: 
     PUSH 	AF
 	LD 		A, (MAIN_FRAME)
-	AND   	%00000001
-	JR   	NZ, MAIN_FRAME_1
+	AND   	%00000011				; 4 frames
 
+	CP      %00000001
+	JR      Z, MAIN_FRAME_1			; frame 1
+
+	CP      %00000010
+	JR      Z, MAIN_FRAME_2			; frame 2
+
+	CP      %00000011
+	JR      Z, MAIN_FRAME_3			; frame 3
+
+									; so frame 0...
+
+MAIN_FRAME_0:
 	CALL 	BUFFER_QUEUE_CHAR		; add new char if needed
-	CALL 	BUFFER_SCROLL			; scroll buffer
 
     ; LD      A, COL_MAG
     ; OUT     (C), A  				; set border to show how much time left
 
 	JR 		MAIN_FRAME_DONE
+
 MAIN_FRAME_1:
-	CALL	BUFFER_RENDER			; pixel buf to render buf
-	CALL	RENDER_SMC				; self-modify the rendering registers from the buffer
+	CALL 	BUFFER_SCROLL			; scroll buffer
 
     ; LD      A, COL_GRN
     ; OUT     (C), A  				; set border to show how much time left
+
+	JR 		MAIN_FRAME_DONE
+
+MAIN_FRAME_2:
+	CALL	BUFFER_RENDER			; pixel buf to render buf
+
+    ; LD      A, COL_BLU
+    ; OUT     (C), A  				; set border to show how much time left
+
+	JR 		MAIN_FRAME_DONE
+
+MAIN_FRAME_3:
+	CALL	RENDER_SMC				; self-modify the rendering registers from the buffer
+
+    ; LD      A, COL_RED
+    ; OUT     (C), A  				; set border to show how much time left
+
 
 MAIN_FRAME_DONE:
 	LD 		A, (MAIN_FRAME)
@@ -137,8 +165,8 @@ INTERRUPT:
 	; pop de
 	; pop bc
 	; pop af
-	ei                               ; Enable interrupts
-	ret                              ; INTERRUPT
+	EI                               ; Enable interrupts
+	RET                              ; INTERRUPT
 
 MAIN_FRAME:
 	DEFB 		0
