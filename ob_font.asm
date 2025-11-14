@@ -75,30 +75,30 @@ OB_FONT_ASCII:
     defw        OB_FONT_A           ; A-O
     defw        OB_FONT_B
     defw        OB_FONT_C
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
+    defw        OB_FONT_D
+    defw        OB_FONT_E
+    defw        OB_FONT_F
+    defw        OB_FONT_G
+    defw        OB_FONT_H
+    defw        OB_FONT_I
+    defw        OB_FONT_J
+    defw        OB_FONT_K
+    defw        OB_FONT_L
+    defw        OB_FONT_M
+    defw        OB_FONT_N
+    defw        OB_FONT_O
 
-    defw        OB_FONT_A           ; 0x50 P-Z
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
-    defw        OB_FONT_A
+    defw        OB_FONT_P           ; 0x50 P-Z
+    defw        OB_FONT_Q
+    defw        OB_FONT_R
+    defw        OB_FONT_S
+    defw        OB_FONT_T
+    defw        OB_FONT_U
+    defw        OB_FONT_V
+    defw        OB_FONT_W
+    defw        OB_FONT_X
+    defw        OB_FONT_Y
+    defw        OB_FONT_Z
     defw        OB_FONT_BLANK       ; [
     defw        OB_FONT_BLANK       ; \
     defw        OB_FONT_BLANK       ; ]
@@ -149,4 +149,233 @@ OB_FONT_C:
     defb       1, 0, 1, 0
     defb       1, 1, 0, 0
 
+OB_FONT_D:
+    defb       1, 1, 0, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 1, 0, 0
+
+OB_FONT_E:
+    defb       1, 1, 1, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 1, 1, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 1, 1, 0
+
+OB_FONT_F:
+    defb       1, 1, 1, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 1, 1, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+
+OB_FONT_G:
+    defb       1, 1, 0, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 1, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 1, 0, 0
+
+OB_FONT_H:
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 1, 1, 0
+    defb       1, 1, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+
+OB_FONT_I:
+    defb       1, 1, 1, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       1, 1, 1, 0
+
+OB_FONT_J:
+    defb       1, 1, 1, 0
+    defb       0, 0, 1, 0
+    defb       0, 0, 1, 0
+    defb       0, 0, 1, 0
+    defb       0, 0, 1, 0
+    defb       0, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       0, 1, 0, 0
+
+OB_FONT_K:
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 1, 0, 0
+    defb       1, 1, 0, 0
+    defb       1, 1, 0, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+
+OB_FONT_L:
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 1, 1, 0
+
+OB_FONT_M:
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 1, 1, 0
+    defb       1, 1, 1, 0
+    defb       1, 1, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+
+OB_FONT_N:
+    defb       1, 1, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+
+OB_FONT_O:
+    defb       1, 1, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 1, 1, 0
+
+OB_FONT_P:
+    defb       1, 1, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 1, 1, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+
+OB_FONT_Q:
+    defb       1, 1, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 1, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 1, 1, 1
+
+OB_FONT_R:
+    defb       1, 1, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 1, 1, 0
+    defb       1, 1, 0, 0
+    defb       1, 1, 0, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+
+OB_FONT_S:
+    defb       1, 1, 1, 0
+    defb       1, 0, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 1, 1, 0
+    defb       0, 0, 1, 0
+    defb       0, 0, 1, 0
+    defb       0, 0, 1, 0
+    defb       1, 1, 1, 0
+
+OB_FONT_T:
+    defb       1, 1, 1, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+
+OB_FONT_U:
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 1, 1, 0
+
+OB_FONT_V:
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+
+OB_FONT_W:
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       1, 1, 1, 0
+    defb       1, 1, 1, 0
+    defb       1, 1, 1, 0
+    defb       1, 0, 1, 0
+
+OB_FONT_X:
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+
+OB_FONT_Y:
+    defb       1, 0, 1, 0
+    defb       1, 0, 1, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 0, 0, 0
+    defb       0, 0, 0, 0
+
+OB_FONT_Z:
+    defb       1, 1, 1, 0
+    defb       0, 0, 1, 0
+    defb       0, 0, 1, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       0, 1, 0, 0
+    defb       1, 0, 0, 0
+    defb       1, 1, 1, 0
 

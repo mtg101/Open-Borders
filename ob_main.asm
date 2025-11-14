@@ -67,7 +67,7 @@ SETUP_DURING_SCREEN_DRAW:
 	AND   	%00000001
 	JR   	NZ, MAIN_FRAME_1
 
-	CALL 	BUFFER_QUEUE			; add new char if needed
+	CALL 	BUFFER_QUEUE_CHAR		; add new char if needed
 	CALL 	BUFFER_SCROLL			; scroll buffer
 
     ; LD      A, COL_MAG
@@ -75,6 +75,7 @@ SETUP_DURING_SCREEN_DRAW:
 
 	JR 		MAIN_FRAME_DONE
 MAIN_FRAME_1:
+	CALL	BUFFER_RENDER			; pixel buf to render buf
 	CALL	RENDER_SMC				; self-modify the rendering registers from the buffer
 
     ; LD      A, COL_GRN
