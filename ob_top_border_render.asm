@@ -1086,7 +1086,7 @@ RENDER_SMC:
 
     PUSH        HL
 
-    LD          B, 40                   ; 56 rows
+    LD          B, 56                   ; 56 rows
     LD          DE, TOP_BORDER_RENDER_ROW_1 ; start of code to modify
 
 RENDER_SMC_ROW_LOOP:
