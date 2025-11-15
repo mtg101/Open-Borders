@@ -444,9 +444,8 @@ BUFFER_FRAME:
     DEFB        0
 
 BUFFER_MESSAGE:
-    DEFB        "ALL ARE WELCOME HERE         "
-    DEFB        "COME CLOSE TO THE EDGE        "
-    DEFB        "EXPLORE THE BORDER           "
+    DEFB        " OPEN BORDERS        "
+    DEFB        " OPEN MINDS        "
     DEFB        0
 
 BUFFER_MESSAGE_INDEX:

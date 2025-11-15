@@ -1086,47 +1086,71 @@ RENDER_SMC:
     PUSH        HL
 
 ; row 1
-    LD          HL, TOP_BORDER_RENDER_ROW_1
+    LD          DE, TOP_BORDER_RENDER_ROW_1
     LD          B, 15                   ; loop 15 times
-    INC         HL                      ; step over OUT (ED) opcode
+    INC         DE                      ; step over OUT (ED) opcode
 
 RENDER_SMC_ROW_1_LOOP:
-    LD          (HL), $51               ; OUT (C), H = ED 61
-    INC         HL                      ; step over operand
-    INC         HL                      ; step over opcode
+    LD          HL, BUFFER_REGISTER_LUT
+    PUSH        BC
+    LD          BC, 1
+    ADD         HL, BC
+    POP         BC
+    LD          A, (HL)
+    LD          (DE), A               
+    INC         DE                      ; step over operand
+    INC         DE                      ; step over opcode
     DJNZ        RENDER_SMC_ROW_1_LOOP
 
 ; row 2
-    LD          HL, TOP_BORDER_RENDER_ROW_2
+    LD          DE, TOP_BORDER_RENDER_ROW_2
     LD          B, 15                   ; loop 15 times
-    INC         HL                      ; step over OUT (ED) opcode
+    INC         DE                      ; step over OUT (ED) opcode
 
 RENDER_SMC_ROW_2_LOOP:
-    LD          (HL), $41               ; OUT (C), H = ED 61
-    INC         HL                      ; step over operand
-    INC         HL                      ; step over opcode
+    LD          HL, BUFFER_REGISTER_LUT
+    PUSH        BC
+    LD          BC, 2
+    ADD         HL, BC
+    POP         BC
+    LD          A, (HL)
+    LD          (DE), A               
+    INC         DE                      ; step over operand
+    INC         DE                      ; step over opcode
     DJNZ        RENDER_SMC_ROW_2_LOOP
 
 ; row 3
-    LD          HL, TOP_BORDER_RENDER_ROW_3
+    LD          DE, TOP_BORDER_RENDER_ROW_3
     LD          B, 15                   ; loop 15 times
-    INC         HL                      ; step over OUT (ED) opcode
+    INC         DE                      ; step over OUT (ED) opcode
 
 RENDER_SMC_ROW_3_LOOP:
-    LD          (HL), $61               ; OUT (C), H = ED 61
-    INC         HL                      ; step over operand
-    INC         HL                      ; step over opcode
+    LD          HL, BUFFER_REGISTER_LUT
+    PUSH        BC
+    LD          BC, 3
+    ADD         HL, BC
+    POP         BC
+    LD          A, (HL)
+    LD          (DE), A               
+    INC         DE                      ; step over operand
+    INC         DE                      ; step over opcode
     DJNZ        RENDER_SMC_ROW_3_LOOP
 
 ; row 4
-    LD          HL, TOP_BORDER_RENDER_ROW_4
+    LD          DE, TOP_BORDER_RENDER_ROW_4
     LD          B, 15                   ; loop 15 times
-    INC         HL                      ; step over OUT (ED) opcode
+    INC         DE                      ; step over OUT (ED) opcode
 
 RENDER_SMC_ROW_4_LOOP:
-    LD          (HL), $69               ; OUT (C), H = ED 61
-    INC         HL                      ; step over operand
-    INC         HL                      ; step over opcode
+    LD          HL, BUFFER_REGISTER_LUT
+    PUSH        BC
+    LD          BC, 4
+    ADD         HL, BC
+    POP         BC
+    LD          A, (HL)
+    LD          (DE), A               
+    INC         DE                      ; step over operand
+    INC         DE                      ; step over opcode
     DJNZ        RENDER_SMC_ROW_4_LOOP
 
 
@@ -1136,5 +1160,15 @@ RENDER_SMC_ROW_4_LOOP:
     POP         BC
     POP         AF
 
-    RET                ; RENDER_SMC
+    RET                 ; RENDER_SMC
+
+
+BUFFER_REGISTER_LUT:
+    DEFB        $79     ; A
+    DEFB        $41     ; B
+    DEFB        $51     ; D
+    DEFB        $59     ; E
+    DEFB        $61     ; H
+    DEFB        $69     ; L
+
 
