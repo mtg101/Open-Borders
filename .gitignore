@@ -1,3 +1,4 @@
 *.sna
 *.lst
+*.sld
 .tmp/disasm.list

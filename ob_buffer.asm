@@ -18,8 +18,6 @@ BUFFER_SCROLL_LOOP:
 
     ; step over to next row
     INC         HL
-    INC         HL
-    INC         DE
     INC         DE
 
     POP         BC
@@ -43,177 +41,57 @@ BUFFER_QUEUE_CHAR:
     AND         %00000011
     JP          NZ, BUFFER_DONE_CHAR    ; skip if it's not frame 00
 
-    LD          HL, (BUFFER_MESSAGE_INDEX)
-    LD          A, (HL)
+    LD          HL, (BUFFER_MESSAGE_INDEX)  ; next char
+    LD          A, (HL)                     ; get that char
 
     ; find the pixels
     LD          HL, OB_FONT_ASCII       ; base LUT
     SLA         A                       ; double ASCII value to move Words into LUT
-    LD          D, 0
-    LD          E, A
-    ADD         HL, DE                  ; HL now points to the pixels
+    LD          D, 0                    ; zero it
+    LD          E, A                    ; offset
+    ADD         HL, DE                  ; HL now addr of pixels
+
+    LD          E, (HL)                 ; load part of addr
+    INC         HL                      ; step
+    LD          D, (HL)                 ; load other part of addr
+
+    EX          DE, HL                  ; make hl point at char pixels
+
+
 
     ; render the char pixels into the buffer
 
     ; row 1
-    LD          DE, PIXEL_BUFFER_ROWS + 16  
-
-    ; copy pixels
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
+    LD          DE, PIXEL_BUFFER_ROWS + 16  ; last 4 bytes of the row
+    .4 LDI                                  ; copy the 4 bytes
 
     ; row 2
     LD          DE, PIXEL_BUFFER_ROWS + 20 + 16  
-
-    ; copy pixels
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
+    .4 LDI                                  ; copy the 4 bytes
 
     ; row 3
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 2) + 16  
-
-    ; copy pixels
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
+    .4 LDI                                  ; copy the 4 bytes
 
     ; row 4
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 3) + 16  
-
-    ; copy pixels
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
+    .4 LDI                                  ; copy the 4 bytes
 
     ; row 5
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 4) + 16  
-
-    ; copy pixels
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
+    .4 LDI                                  ; copy the 4 bytes
 
     ; row 6
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 5) + 16  
-
-    ; copy pixels
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
+    .4 LDI                                  ; copy the 4 bytes
 
     ; row 7
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 6) + 16  
-
-    ; copy pixels
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
+    .4 LDI                                  ; copy the 4 bytes
 
     ; row 8
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 7) + 16  
-
-    ; copy pixels
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
-    INC         HL
-    LD          A, (HL)
-    LD          (DE), A
-
+    .4 LDI                                  ; copy the 4 bytes
 
     LD          HL, (BUFFER_MESSAGE_INDEX)  ; reload index
     INC         HL                      ; point to next char
@@ -246,190 +124,48 @@ BUFFER_RENDER:
     PUSH        DE
     PUSH        HL
 
-    ; thick row 1/8
-    LD          HL, PIXEL_BUFFER_ROWS
     LD          DE, RENDER_BUFFER_ROWS
+    LD          IY, RENDER_BUFFER_TEMP_ROW
 
-    .15 LDI                             ; all 15 visible bars - row 1/7
+    ; course row 1/8
+    LD          IX, PIXEL_BUFFER_ROWS
+    CALL        BUFFER_LOAD_TEMP_ROW
+    CALL        BUFFER_RENDER_7
 
-    LD          HL, PIXEL_BUFFER_ROWS   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 2/7
+    ; course row 2/8
+    LD          IX, PIXEL_BUFFER_ROWS + 20
+    CALL        BUFFER_LOAD_TEMP_ROW
+    CALL        BUFFER_RENDER_7
 
-    LD          HL, PIXEL_BUFFER_ROWS   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 3/7
+    ; course row 3/8
+    LD          IX, PIXEL_BUFFER_ROWS + (20 * 2)
+    CALL        BUFFER_LOAD_TEMP_ROW
+    CALL        BUFFER_RENDER_7
 
-    LD          HL, PIXEL_BUFFER_ROWS   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 4/7
+    ; course row 4/8
+    LD          IX, PIXEL_BUFFER_ROWS + (20 * 3)
+    CALL        BUFFER_LOAD_TEMP_ROW
+    CALL        BUFFER_RENDER_7
 
-    LD          HL, PIXEL_BUFFER_ROWS   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 5/7
+    ; course row 5/8
+    LD          IX, PIXEL_BUFFER_ROWS + (20 * 4)
+    CALL        BUFFER_LOAD_TEMP_ROW
+    CALL        BUFFER_RENDER_7
 
-    LD          HL, PIXEL_BUFFER_ROWS   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 6/7
+    ; course row 6/8
+    LD          IX, PIXEL_BUFFER_ROWS + (20 * 5)
+    CALL        BUFFER_LOAD_TEMP_ROW
+    CALL        BUFFER_RENDER_7
 
-    LD          HL, PIXEL_BUFFER_ROWS   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 7/7
+    ; course row 7/8
+    LD          IX, PIXEL_BUFFER_ROWS + (20 * 6)
+    CALL        BUFFER_LOAD_TEMP_ROW
+    CALL        BUFFER_RENDER_7
 
-    ; thick row 2/8
-    LD          HL, PIXEL_BUFFER_ROWS + 20  ; 20 pixels per row in pixel buffer
-
-    .15 LDI                             ; all 15 visible bars - row 1/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + 20   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 2/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + 20   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 3/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + 20   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 4/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + 20   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 5/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + 20   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 6/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + 20   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 7/7
-
-    ; thick row 3/8
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)  ; 20 pixels per row in pixel buffer
-
-    .15 LDI                             ; all 15 visible bars - row 1/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 2/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 3/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 4/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 5/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 6/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 2)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 7/7
-
-    ; thick row 4/8
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)  ; 20 pixels per row in pixel buffer
-
-    .15 LDI                             ; all 15 visible bars - row 1/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 2/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 3/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 4/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 5/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 6/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 3)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 7/7
-
-    ; thick row 5/8
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)  ; 20 pixels per row in pixel buffer
-
-    .15 LDI                             ; all 15 visible bars - row 1/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 2/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)  ; reset source
-    .15 LDI                             ; all 15 visible bars - row 3/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 4/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 5/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 6/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 4)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 7/7
-
-    ; thick row 6/8
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)  ; 20 pixels per row in pixel buffer
-
-    .15 LDI                             ; all 15 visible bars - row 1/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 2/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 3/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 4/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 5/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 6/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 5)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 7/7
-
-    ; thick row 7/8
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)  ; 20 pixels per row in pixel buffer
-
-    .15 LDI                             ; all 15 visible bars - row 1/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 2/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 3/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 4/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 5/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 6/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 6)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 7/7
-
-    ; thick row 8/8
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)  ; 20 pixels per row in pixel buffer
-
-    .15 LDI                             ; all 15 visible bars - row 1/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 2/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 3/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 4/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 5/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 6/7
-
-    LD          HL, PIXEL_BUFFER_ROWS + (20 * 7)   ; reset source
-    .15 LDI                             ; all 15 visible bars - row 7/7
+    ; course row 8/8
+    LD          IX, PIXEL_BUFFER_ROWS + (20 * 7)
+    CALL        BUFFER_LOAD_TEMP_ROW
+    CALL        BUFFER_RENDER_7
 
 
     POP         HL
@@ -439,71 +175,159 @@ BUFFER_RENDER:
 
     RET                             ; BUFFER_RENDER
 
-BUFFER_LOAD_STATIC_TEST:
-    PUSH        AF
-    PUSH        BC
-    PUSH        DE
-    PUSH        HL
+BUFFER_RENDER_7:
+    ; render RENDER_BUFFER_TEMP_ROW 7 times
+    LD          HL, RENDER_BUFFER_TEMP_ROW  ; reset source
+    .15 LDI                                 ; all 15 visible bars - row 1/7
 
-    LD          HL, RENDER_BUFFER_ROWS
+    LD          HL, RENDER_BUFFER_TEMP_ROW  ; reset source
+    .15 LDI                                 ; all 15 visible bars - row 2/7
 
-    LD          B, 56
+    LD          HL, RENDER_BUFFER_TEMP_ROW  ; reset source
+    .15 LDI                                 ; all 15 visible bars - row 3/7
 
-BUFFER_LOAD_STATIC_TEST_LOOP:
-    LD          (HL), $79             ; 1/15
-    INC         HL
+    LD          HL, RENDER_BUFFER_TEMP_ROW  ; reset source
+    .15 LDI                                 ; all 15 visible bars - row 4/7
 
-    LD          (HL), $41             ; 2/15
-    INC         HL
+    LD          HL, RENDER_BUFFER_TEMP_ROW  ; reset source
+    .15 LDI                                 ; all 15 visible bars - row 5/7
 
-    LD          (HL), $79             ; 3/15
-    INC         HL
+    LD          HL, RENDER_BUFFER_TEMP_ROW  ; reset source
+    .15 LDI                                 ; all 15 visible bars - row 6/7
 
-    LD          (HL), $41             ; 4/15
-    INC         HL
+    LD          HL, RENDER_BUFFER_TEMP_ROW  ; reset source
+    .15 LDI                                 ; all 15 visible bars - row 7/7
 
-    LD          (HL), $79             ; 5/15
-    INC         HL
-
-    LD          (HL), $41             ; 6/15
-    INC         HL
-
-    LD          (HL), $79             ; 7/15
-    INC         HL
-
-    LD          (HL), $41             ; 8/15
-    INC         HL
-
-    LD          (HL), $79             ; 9/15
-    INC         HL
-
-    LD          (HL), $41             ; 10/15
-    INC         HL
-
-    LD          (HL), $79             ; 11/15
-    INC         HL
-
-    LD          (HL), $41             ; 12/15
-    INC         HL
-
-    LD          (HL), $79             ; 13/15
-    INC         HL
-
-    LD          (HL), $41             ; 14/15
-    INC         HL
-
-    LD          (HL), $79             ; 15/15
-    INC         HL
-
-    DJNZ        BUFFER_LOAD_STATIC_TEST_LOOP
+    RET                                     ; BUFFER_RENDER_7
 
 
-    POP         HL
-    POP         DE
-    POP         BC
-    POP         AF
+BUFFER_LOAD_TEMP_ROW:
+    ; convert pixels into registers and store in...
+    ; RENDER_BUFFER_TEMP_ROW
+    LD          B, 0                        ; needed for 16bit ADD
 
-    RET                             ; BUFFER_LOAD_STATIC_TEST
+    ; convert pixel to register 1/15
+    LD          A, (IX)                     ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY), A                     ; register into temp buf
+
+    ; convert pixel to register 2/15
+    LD          A, (IX+1)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+1), A                   ; register into temp buf
+
+    ; convert pixel to register 3/15
+    LD          A, (IX+2)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+2), A                   ; register into temp buf
+
+    ; convert pixel to register 4/15
+    LD          A, (IX+3)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+3), A                   ; register into temp buf
+
+    ; convert pixel to register 5/15
+    LD          A, (IX+4)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+4), A                   ; register into temp buf
+
+    ; convert pixel to register 6/15
+    LD          A, (IX+5)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+5), A                   ; register into temp buf
+
+    ; convert pixel to register 7/15
+    LD          A, (IX+6)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+6), A                   ; register into temp buf
+
+    ; convert pixel to register 8/15
+    LD          A, (IX+7)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+7), A                   ; register into temp buf
+
+    ; convert pixel to register 9/15
+    LD          A, (IX+8)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+8), A                   ; register into temp buf
+
+    ; convert pixel to register 10/15
+    LD          A, (IX+9)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+9), A                   ; register into temp buf
+
+    ; convert pixel to register 11/15
+    LD          A, (IX+10)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+10), A                   ; register into temp buf
+
+    ; convert pixel to register 12/15
+    LD          A, (IX+11)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+11), A                   ; register into temp buf
+
+    ; convert pixel to register 13/15
+    LD          A, (IX+12)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+12), A                   ; register into temp buf
+
+    ; convert pixel to register 14/15
+    LD          A, (IX+13)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+13), A                   ; register into temp buf
+
+    ; convert pixel to register 15/15
+    LD          A, (IX+14)                   ; pixel in A
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
+    LD          (IY+14), A                   ; register into temp buf
+
+    RET                                     ; BUFFER_LOAD_TEMP_ROW
+
 
 BUFFER_FRAME:
     DEFB        0
@@ -532,6 +356,9 @@ PIXEL_BUFFER_ROWS:
 ; 56 * 15 = 840
 RENDER_BUFFER_ROWS:
     DEFS    840
+
+RENDER_BUFFER_TEMP_ROW:
+    DEFS    15
 
 BUFFER_REGISTER_LUT:
     DEFB        $79     ; A

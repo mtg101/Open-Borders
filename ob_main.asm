@@ -80,35 +80,18 @@ SETUP_DURING_SCREEN_DRAW:
 
 MAIN_FRAME_0:
 	CALL 	BUFFER_QUEUE_CHAR		; add new char if needed
-
-    ; LD      A, COL_MAG
-    ; OUT     (C), A  				; set border to show how much time left
-
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_1:
 	CALL 	BUFFER_SCROLL			; scroll buffer
-
-    ; LD      A, COL_GRN
-    ; OUT     (C), A  				; set border to show how much time left
-
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_2:
-;	hack test todo - CALL	BUFFER_RENDER			; pixel buf to render buf
-	CALL    BUFFER_LOAD_STATIC_TEST
-
-    ; LD      A, COL_BLU
-    ; OUT     (C), A  				; set border to show how much time left
-
+	CALL	BUFFER_RENDER			; pixel buf to render buf
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_3:
 	CALL	RENDER_SMC				; self-modify the rendering registers from the buffer
-
-    ; LD      A, COL_RED
-    ; OUT     (C), A  				; set border to show how much time left
-
 
 MAIN_FRAME_DONE:
 	LD 		A, (MAIN_FRAME)
