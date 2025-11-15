@@ -5,8 +5,8 @@
 
 	INCLUDE "speccy_defs.asm"		; must be indented
 	INCLUDE "ob_top_border_render.asm"
-	INCLUDE "ob_buffer.asm"
 	INCLUDE "ob_font.asm"
+	INCLUDE "ob_buffer.asm"
 	
 START:
 	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
@@ -95,7 +95,7 @@ MAIN_FRAME_1:
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_2:
-;	CALL	BUFFER_RENDER			; pixel buf to render buf
+;	hack test todo - CALL	BUFFER_RENDER			; pixel buf to render buf
 	CALL    BUFFER_LOAD_STATIC_TEST
 
     ; LD      A, COL_BLU

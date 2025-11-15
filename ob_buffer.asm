@@ -440,6 +440,68 @@ BUFFER_RENDER:
     RET                             ; BUFFER_RENDER
 
 BUFFER_LOAD_STATIC_TEST:
+    PUSH        AF
+    PUSH        BC
+    PUSH        DE
+    PUSH        HL
+
+    LD          HL, RENDER_BUFFER_ROWS
+
+    LD          B, 56
+
+BUFFER_LOAD_STATIC_TEST_LOOP:
+    LD          (HL), $79             ; 1/15
+    INC         HL
+
+    LD          (HL), $41             ; 2/15
+    INC         HL
+
+    LD          (HL), $79             ; 3/15
+    INC         HL
+
+    LD          (HL), $41             ; 4/15
+    INC         HL
+
+    LD          (HL), $79             ; 5/15
+    INC         HL
+
+    LD          (HL), $41             ; 6/15
+    INC         HL
+
+    LD          (HL), $79             ; 7/15
+    INC         HL
+
+    LD          (HL), $41             ; 8/15
+    INC         HL
+
+    LD          (HL), $79             ; 9/15
+    INC         HL
+
+    LD          (HL), $41             ; 10/15
+    INC         HL
+
+    LD          (HL), $79             ; 11/15
+    INC         HL
+
+    LD          (HL), $41             ; 12/15
+    INC         HL
+
+    LD          (HL), $79             ; 13/15
+    INC         HL
+
+    LD          (HL), $41             ; 14/15
+    INC         HL
+
+    LD          (HL), $79             ; 15/15
+    INC         HL
+
+    DJNZ        BUFFER_LOAD_STATIC_TEST_LOOP
+
+
+    POP         HL
+    POP         DE
+    POP         BC
+    POP         AF
 
     RET                             ; BUFFER_LOAD_STATIC_TEST
 
@@ -464,9 +526,21 @@ PIXEL_BUFFER_ROWS:
     DEFS    160
 
 ; render buffer for actual border
+; stores the register values to SMC
 ; 56 row of course
 ; 15 wide as that's how many stripes can display
 ; 56 * 15 = 840
 RENDER_BUFFER_ROWS:
     DEFS    840
+
+BUFFER_REGISTER_LUT:
+    DEFB        $79     ; A
+    DEFB        $41     ; B
+    DEFB        $51     ; D
+    DEFB        $59     ; E
+    DEFB        $61     ; H
+    DEFB        $69     ; L
+
+
+
 

@@ -1083,7 +1083,6 @@ RENDER_SMC:
     PUSH        AF
     PUSH        BC
     PUSH        DE
-
     PUSH        HL
 
     LD          B, 56                   ; 56 rows
@@ -1094,22 +1093,11 @@ RENDER_SMC_ROW_LOOP:
 
     LD          B, 15                   ; loop 15 times
     INC         DE                      ; step over OUT (ED) opcode
-    LD          IX, RENDER_BUFFER_ROWS  ; slow but worry later... 
+    LD          HL, RENDER_BUFFER_ROWS  ; list of registers in the render buffer
 
 RENDER_SMC_STRIPE_LOOP:
-    LD          HL, BUFFER_REGISTER_LUT
-    PUSH        BC
-    PUSH        AF
-
-    LD          A, (IX)                 ; load which reg
-    INC         IX                      ; move to next
-    LD          B, 0                    ; BC needed
-    LD          C, A                    ; actual value to add
-    ADD         HL, BC                  ; add offset
-
-    POP         AF
-    POP         BC
-    LD          A, (HL)
+    LD          A, (HL)                 ; load which reg
+    INC         HL                      ; move to next
     LD          (DE), A               
     INC         DE                      ; step over operand
     INC         DE                      ; step over opcode
@@ -1126,14 +1114,5 @@ RENDER_SMC_STRIPE_LOOP:
     POP         AF
 
     RET                 ; RENDER_SMC
-
-
-BUFFER_REGISTER_LUT:
-    DEFB        $79     ; A
-    DEFB        $41     ; B
-    DEFB        $51     ; D
-    DEFB        $59     ; E
-    DEFB        $61     ; H
-    DEFB        $69     ; L
 
 
