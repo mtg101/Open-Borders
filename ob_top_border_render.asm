@@ -1087,13 +1087,13 @@ RENDER_SMC:
 
     LD          B, 56                   ; 56 rows
     LD          DE, TOP_BORDER_RENDER_ROW_1 ; start of code to modify
+    LD          HL, RENDER_BUFFER_ROWS  ; list of registers in the render buffer
 
 RENDER_SMC_ROW_LOOP:
     PUSH        BC                      ; for inner loop
 
     LD          B, 15                   ; loop 15 times
     INC         DE                      ; step over OUT (ED) opcode
-    LD          HL, RENDER_BUFFER_ROWS  ; list of registers in the render buffer
 
 RENDER_SMC_STRIPE_LOOP:
     LD          A, (HL)                 ; load which reg

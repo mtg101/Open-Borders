@@ -334,6 +334,7 @@ BUFFER_FRAME:
 
 BUFFER_MESSAGE:
     DEFB        " OPEN BORDERS        "
+    DEFB        " ALL ARE WELCOME        "
     DEFB        " OPEN MINDS        "
     DEFB        0
 
