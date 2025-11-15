@@ -11,7 +11,6 @@
 START:
 	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
 	CALL	INITIAL_SETUP			; border black, any other set up
-	CALL    BUFFER_LOAD_STATIC_TEST
 
 ANIMATE_MAIN:
 	CALL	SETUP_DURING_SCREEN_DRAW; prepare evenrything, incuding CMS, during main screen draw
@@ -88,7 +87,7 @@ MAIN_FRAME_0:
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_1:
-;	CALL 	BUFFER_SCROLL			; scroll buffer
+	CALL 	BUFFER_SCROLL			; scroll buffer
 
     ; LD      A, COL_GRN
     ; OUT     (C), A  				; set border to show how much time left
@@ -96,7 +95,8 @@ MAIN_FRAME_1:
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_2:
-	CALL	BUFFER_RENDER			; pixel buf to render buf
+;	CALL	BUFFER_RENDER			; pixel buf to render buf
+	CALL    BUFFER_LOAD_STATIC_TEST
 
     ; LD      A, COL_BLU
     ; OUT     (C), A  				; set border to show how much time left
