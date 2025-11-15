@@ -1086,7 +1086,7 @@ RENDER_SMC:
 
     PUSH        HL
 
-    LD          B, 8                   ; 56 rows
+    LD          B, 40                   ; 56 rows
     LD          DE, TOP_BORDER_RENDER_ROW_1 ; start of code to modify
 
 RENDER_SMC_ROW_LOOP:
@@ -1102,6 +1102,7 @@ RENDER_SMC_STRIPE_LOOP:
     PUSH        AF
 
     LD          A, (IX)                 ; load which reg
+    INC         IX                      ; move to next
     LD          B, 0                    ; BC needed
     LD          C, A                    ; actual value to add
     ADD         HL, BC                  ; add offset
@@ -1114,15 +1115,14 @@ RENDER_SMC_STRIPE_LOOP:
     INC         DE                      ; step over opcode
     DJNZ        RENDER_SMC_STRIPE_LOOP
 
-    INC         DE                      ; step over operand
-    .11 INC     DE                      ; skip over 11 nops
+    .10 INC     DE                      ; 11 nops, but one opcode from loop not needed
 
     POP         BC                      ; for inner loop
     DJNZ        RENDER_SMC_ROW_LOOP     ; RENDER_SMC_ROW_LOOP
 
     POP         HL
     POP         DE
-    POP         BC
+    POP         BC 
     POP         AF
 
     RET                 ; RENDER_SMC

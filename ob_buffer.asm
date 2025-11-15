@@ -439,6 +439,9 @@ BUFFER_RENDER:
 
     RET                             ; BUFFER_RENDER
 
+BUFFER_LOAD_STATIC_TEST:
+
+    RET                             ; BUFFER_LOAD_STATIC_TEST
 
 BUFFER_FRAME:
     DEFB        0

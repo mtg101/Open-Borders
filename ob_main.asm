@@ -9,25 +9,26 @@
 	INCLUDE "ob_font.asm"
 	
 START:
-	call	INITIALISE_INTERRUPT	; IM2 with ROM trick
-	call	INITIAL_SETUP			; border black, any other set up
+	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
+	CALL	INITIAL_SETUP			; border black, any other set up
+	CALL    BUFFER_LOAD_STATIC_TEST
 
 ANIMATE_MAIN:
-	call	SETUP_DURING_SCREEN_DRAW; prepare evenrything, incuding CMS, during main screen draw
+	CALL	SETUP_DURING_SCREEN_DRAW; prepare evenrything, incuding CMS, during main screen draw
 
-	halt							; wait for vsync (fired after bottom border, start of vblank)
+	HALT							; wait for vsync (fired after bottom border, start of vblank)
 
-	call	VBLANK_PERIOD_WORK		; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
-	call	TOP_BORDER_RENDER		; timining-critical flipping of top border colours
-	jr		ANIMATE_MAIN
+	CALL	VBLANK_PERIOD_WORK		; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
+	CALL	TOP_BORDER_RENDER		; timining-critical flipping of top border colours
+	JR		ANIMATE_MAIN
 
 ; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
 VBLANK_PERIOD_WORK:		
 	; OK so this is just guesswork and fiddling now... 
-	push af
-	push bc
-	push de
-	push hl
+	PUSH af
+	PUSH bc
+	PUSH de
+	PUSH hl
 
 	LD		B, 120
 VBLANK_LOOP:
@@ -39,12 +40,12 @@ VBLANK_LOOP:
 	;NOP
 	;NOP
 
-	pop hl
-	pop de
-	pop bc
-	pop af
+	POP hl
+	POP de
+	POP bc
+	POP af
 
-	ret								; VBLANK_PERIOD_WORK
+	RET								; VBLANK_PERIOD_WORK
 									
 ; border black and other set up
 INITIAL_SETUP:
@@ -87,7 +88,7 @@ MAIN_FRAME_0:
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_1:
-	CALL 	BUFFER_SCROLL			; scroll buffer
+;	CALL 	BUFFER_SCROLL			; scroll buffer
 
     ; LD      A, COL_GRN
     ; OUT     (C), A  				; set border to show how much time left
