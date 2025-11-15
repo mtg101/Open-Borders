@@ -336,6 +336,8 @@ BUFFER_MESSAGE:
     DEFB        " OPEN BORDERS        "
     DEFB        " ALL ARE WELCOME        "
     DEFB        " OPEN MINDS        "
+    DEFB        " F    N     O    R    D    S       "
+    DEFB        " ERIS        "
     DEFB        0
 
 BUFFER_MESSAGE_INDEX:
