@@ -41,8 +41,17 @@ BUFFER_QUEUE_CHAR:
     AND         %00000011
     JP          NZ, BUFFER_DONE_CHAR    ; skip if it's not frame 00
 
-    LD          HL, (BUFFER_MESSAGE_INDEX)  ; next char
-    LD          A, (HL)                     ; get that char
+    ; find the fx / colour
+    LD          HL, BUFFER_MESSAGE_META ; start of fx buffer
+    LD          DE, (BUFFER_MESSAGE_OFFSET)   ; offset
+    ADD         HL, DE                  ; add offset
+    LD          B, (HL)                 ; get that fx into B
+
+    ; find the char
+    LD          HL, BUFFER_MESSAGE      ; start of buffer
+                                        ; DE is still offset
+    ADD         HL, DE                  ; add offset
+    LD          A, (HL)                 ; get that char
 
     ; find the pixels
     LD          HL, OB_FONT_ASCII       ; base LUT
@@ -57,55 +66,57 @@ BUFFER_QUEUE_CHAR:
 
     EX          DE, HL                  ; make hl point at char pixels
 
-
-
     ; render the char pixels into the buffer
+    ; HL pixels, B fx/colour
 
     ; row 1
     LD          DE, PIXEL_BUFFER_ROWS + 16  ; last 4 bytes of the row
-    .4 LDI                                  ; copy the 4 bytes
+    CALL        BUFFER_QUEUE_COLOUR
 
     ; row 2
     LD          DE, PIXEL_BUFFER_ROWS + 20 + 16  
-    .4 LDI                                  ; copy the 4 bytes
+    CALL        BUFFER_QUEUE_COLOUR
 
     ; row 3
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 2) + 16  
-    .4 LDI                                  ; copy the 4 bytes
+    CALL        BUFFER_QUEUE_COLOUR
 
     ; row 4
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 3) + 16  
-    .4 LDI                                  ; copy the 4 bytes
+    CALL        BUFFER_QUEUE_COLOUR
 
     ; row 5
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 4) + 16  
-    .4 LDI                                  ; copy the 4 bytes
+    CALL        BUFFER_QUEUE_COLOUR
 
     ; row 6
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 5) + 16  
-    .4 LDI                                  ; copy the 4 bytes
+    CALL        BUFFER_QUEUE_COLOUR
 
     ; row 7
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 6) + 16  
-    .4 LDI                                  ; copy the 4 bytes
+    CALL        BUFFER_QUEUE_COLOUR
 
     ; row 8
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 7) + 16  
-    .4 LDI                                  ; copy the 4 bytes
+    CALL        BUFFER_QUEUE_COLOUR
 
-    LD          HL, (BUFFER_MESSAGE_INDEX)  ; reload index
-    INC         HL                      ; point to next char
-    LD          A, (HL)                 ; load that next char
+    ; back to the next char, to work out next or start again at beginning...
+    LD          HL, BUFFER_MESSAGE      ; start of buffer
+    LD          DE, (BUFFER_MESSAGE_OFFSET)   ; offset
+    INC         DE                      ; add to offset for next char
+    ADD         HL, DE                  ; add offset
+    LD          A, (HL)                 ; get that char
     CP          0                       ; check for null terminator
     JR          NZ, BUFFER_NEXT_CHAR
 
-    LD          HL, BUFFER_MESSAGE      ; point to start of message
+    LD          DE, 0                   ; point to start of message
 
 BUFFER_NEXT_CHAR:
-    LD          (BUFFER_MESSAGE_INDEX), HL
+    LD          (BUFFER_MESSAGE_OFFSET), DE ; save new offset
 
 BUFFER_DONE_CHAR:
-    LD          A, (BUFFER_FRAME)
+    LD          A, (BUFFER_FRAME)       ; adbance frame
     INC         A
     LD          (BUFFER_FRAME), A
 
@@ -116,6 +127,84 @@ BUFFER_DONE_CHAR:
 
     RET                             ; BUFFER_QUEUE
 
+; render the char pixels into the buffer
+; IN: HL pixels, B fx/colour, DE destination in pixel buffer
+; OUT: HL has been advanced (rest don't matter)
+BUFFER_QUEUE_COLOUR:
+    ; if pixel 0 is on, put A into pixel buffer
+    ; if off, put 0 into pixel buffer
+    LD          A, (HL)             ; pixel in A
+    CP          0                   
+    JR          Z, BUFFER_QUEUE_COLOUR_OFF_0
+
+BUFFER_QUEUE_COLOUR_ON_0:
+    LD          A, B                ; B has fx/colour
+    JR          BUFFER_QUEUE_COLOUR_DONE_0
+
+BUFFER_QUEUE_COLOUR_OFF_0:
+    LD          A, 0                ; blank for pixel off
+
+BUFFER_QUEUE_COLOUR_DONE_0:
+    LD          (DE), A             ; render to pixel buffer
+    INC         DE                  ; next pixel
+
+    ; pixel 1
+    INC         HL          
+
+    LD          A, (HL)             ; pixel in A
+    CP          0                   
+    JR          Z, BUFFER_QUEUE_COLOUR_OFF_1
+
+BUFFER_QUEUE_COLOUR_ON_1:
+    LD          A, B                ; B has fx/colour
+    JR          BUFFER_QUEUE_COLOUR_DONE_1
+
+BUFFER_QUEUE_COLOUR_OFF_1:
+    LD          A, 0                ; blank for pixel off
+
+BUFFER_QUEUE_COLOUR_DONE_1:
+    LD          (DE), A             ; render to pixel buffer
+    INC         DE                  ; next pixel
+
+    ; pixel 2
+    INC         HL          
+
+    LD          A, (HL)             ; pixel in A
+    CP          0                   
+    JR          Z, BUFFER_QUEUE_COLOUR_OFF_2
+
+BUFFER_QUEUE_COLOUR_ON_2:
+    LD          A, B                ; B has fx/colour
+    JR          BUFFER_QUEUE_COLOUR_DONE_2
+
+BUFFER_QUEUE_COLOUR_OFF_2:
+    LD          A, 0                ; blank for pixel off
+
+BUFFER_QUEUE_COLOUR_DONE_2:
+    LD          (DE), A             ; render to pixel buffer
+    INC         DE                  ; next pixel
+
+    ; pixel 3
+    INC         HL          
+
+    LD          A, (HL)             ; pixel in A
+    CP          0                   
+    JR          Z, BUFFER_QUEUE_COLOUR_OFF_3
+
+BUFFER_QUEUE_COLOUR_ON_3:
+    LD          A, B                ; B has fx/colour
+    JR          BUFFER_QUEUE_COLOUR_DONE_3
+
+BUFFER_QUEUE_COLOUR_OFF_3:
+    LD          A, 0                ; blank for pixel off
+
+BUFFER_QUEUE_COLOUR_DONE_3:
+    LD          (DE), A             ; render to pixel buffer
+    INC         DE                  ; next pixel
+
+    INC         HL                  ; ready for next
+
+    RET                             ; BUFFER_QUEUE_COLOUR
 
 ; renders pixel buffer to render buffer
 BUFFER_RENDER:
@@ -333,15 +422,27 @@ BUFFER_FRAME:
     DEFB        0
 
 BUFFER_MESSAGE:
-    DEFB        " OPEN BORDERS        "
-    DEFB        " ALL ARE WELCOME        "
-    DEFB        " OPEN MINDS        "
-    DEFB        " F    N     O    R    D    S       "
-    DEFB        " ERIS        "
-    DEFB        0
+    DEFB        " OPEN BORDERS        "     ; 21 chars
+    DEFB        " ALL ARE WELCOME        "  ; 24 chars
+    DEFB        " OPEN MINDS        "       ; 19 chars
+    DEFB        " F  N  O  R  D  S    "     ; 21 chars
+    DEFB        "Q ERIS       "             ; 13 chars
+    DEFB        0                           ; terminator
 
-BUFFER_MESSAGE_INDEX:
-    DEFW        BUFFER_MESSAGE
+; offset for both chars and fx
+BUFFER_MESSAGE_OFFSET:
+    DEFW        0
+
+; colour / fx details for each char in MESSAGE
+BUFFER_MESSAGE_META:
+    DEFS        21, 1     ; 21 chars
+    DEFS        24, 2     ; 24 chars
+    DEFS        19, 3     ; 19 chars
+;    DEFB        " F  N  O  R  D  S       "  ; 21 chars
+    DEFB        1, 5, 5, 5, 4, 4, 4, 1, 1, 1, 3, 3, 3, 2, 2, 2, 1, 1, 1,    1, 1
+    DEFB        6         ; glitch the Q
+    DEFS        12, 4     ; 13-1=12 chars
+                          ; no terminator, message does that
 
 ; 15 cols, each char is 4 wide, so 4 can show
 ; need 5th for offscreen buffer
@@ -370,6 +471,7 @@ BUFFER_REGISTER_LUT:
     DEFB        $59     ; E
     DEFB        $61     ; H
     DEFB        $69     ; L
+    DEFB        $CD     ; glitch 
 
 
 

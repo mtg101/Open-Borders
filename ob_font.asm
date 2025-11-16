@@ -243,7 +243,7 @@ OB_FONT_M:
     defb       1, 0, 1, 0
     defb       1, 1, 1, 0
     defb       1, 1, 1, 0
-    defb       1, 0, 1, 0
+    defb       1, 1, 1, 0
     defb       1, 0, 1, 0
     defb       1, 0, 1, 0
     defb       1, 0, 1, 0
