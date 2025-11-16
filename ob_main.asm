@@ -24,10 +24,10 @@ ANIMATE_MAIN:
 ; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
 VBLANK_PERIOD_WORK:		
 	; OK so this is just guesswork and fiddling now... 
-	PUSH af
-	PUSH bc
-	PUSH de
-	PUSH hl
+	PUSH AF
+	PUSH BC
+	PUSH DE
+	PUSH HL
 
 	LD		B, 120
 VBLANK_LOOP:
@@ -39,10 +39,10 @@ VBLANK_LOOP:
 	;NOP
 	;NOP
 
-	POP hl
-	POP de
-	POP bc
-	POP af
+	POP HL
+	POP DE
+	POP BC
+	POP AF
 
 	RET								; VBLANK_PERIOD_WORK
 									
@@ -55,7 +55,7 @@ INITIAL_SETUP:
 	LD		B, COL_RED				
 	LD		C, $FE					; border OUT addr
 	LD		D, COL_GRN			
-	LD		E, COL_CYN			
+	LD		E, COL_YEL			
 	LD		H, COL_WHT			
 	LD		L, COL_BLU
 
