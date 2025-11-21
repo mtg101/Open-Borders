@@ -440,8 +440,8 @@ BUFFER_MESSAGE_META:
     DEFS        19, 3     ; 19 chars
 ;    DEFB        " F  N  O  R  D  S       "  ; 21 chars
     DEFB        1, 5, 5, 5, 4, 4, 4, 1, 1, 1, 3, 3, 3, 2, 2, 2, 1, 1, 1,    1, 1
-    DEFB        6         ; glitch the Q
-    DEFS        12, 4     ; 13-1=12 chars
+    DEFB        8         ; glitch the Q
+    DEFS        12, 7     ; 13-1=12 chars
                           ; no terminator, message does that
 
 ; 15 cols, each char is 4 wide, so 4 can show
@@ -465,13 +465,17 @@ RENDER_BUFFER_TEMP_ROW:
     DEFS    15
 
 BUFFER_REGISTER_LUT:
+    DEFB        $71     ; 0 (black)
     DEFB        $79     ; A
     DEFB        $41     ; B
     DEFB        $51     ; D
     DEFB        $59     ; E
     DEFB        $61     ; H
+    DEFB        $49     ; C (yellow, but also noise...)
     DEFB        $69     ; L
-    DEFB        $CD     ; glitch 
+
+BUFFER_REGISTER_GLITCH: ; also 8th index of RENDER_BUFFER_TEMP_ROW
+    DEFB        $CD     ; glitch (probably maked CALL act as NOP, messing up timing, causing glitch :)
 
 
 

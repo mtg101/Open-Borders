@@ -48,16 +48,28 @@ VBLANK_LOOP:
 									
 ; border black and other set up
 INITIAL_SETUP:
-	ld 		A, COL_BLK				; black border
-	OUT		($FE), A				; set border black
+	LD		C, $FE					; border OUT addr / yellow (makes noise...)
+	OUT		(C), 0					; set border black
 
-	LD		A, COL_BLK				
-	LD		B, COL_RED				
-	LD		C, $FE					; border OUT addr
-	LD		D, COL_GRN			
-	LD		E, COL_YEL			
-	LD		H, COL_WHT			
+	LD 		A, COL_BLU				; main palette
+	LD		B, COL_RED
+	LD		D, COL_MAG
+	LD		E, COL_GRN
+	LD		H, COL_CYN
+	LD		L, COL_WHT
+
+	EXX
+	EX		AF
+
+	LD 		A, COL_RED				; alt palette
+	LD		B, COL_MAG
+	LD		D, COL_GRN
+	LD		E, COL_CYN
+	LD		H, COL_WHT
 	LD		L, COL_BLU
+
+	EX 		AF
+	EXX
 
 	ret								; INITIAL_SETUP
 
