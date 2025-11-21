@@ -486,8 +486,9 @@ BUFFER_MESSAGE:
     DEFB        " OPEN BORDERS        "     ; 21 chars
     DEFB        " ALL ARE WELCOME        "  ; 24 chars
     DEFB        " OPEN MINDS        "       ; 19 chars
-    DEFB        " F  N  O  R  D  S    "     ; 21 chars
-    DEFB        "Q  ERIS      "             ; 13 chars
+    DEFB        " B  O  R  D  E  R    "     ; 21 chars
+    DEFB        "Q  OPEN      "             ; 13 chars
+    DEFB        " BUILD BRIDGES       "     ; 21 chars
     DEFB        0                           ; terminator
 
 ; offset for both chars and fx
@@ -505,7 +506,9 @@ BUFFER_MESSAGE_META:
     DEFB        1, 5, 5, 5, 4, 4, 4, 1, 1, 1, 3, 3, 3, 2, 2, 2, 1, 1, 1,    1
     DEFB        $FF       ; EXX ON
     DEFB        8         ; glitch the Q
-    DEFS        11, 7     ; 13-2 chars
+    DEFS        12, 7     ; 13-1 chars
+    DEFS        20, 1     ; 21-1 chars BUILD BRIDGES
+
     DEFB        $FF       ; EXX back to off
                           ; no terminator, message does that
 
