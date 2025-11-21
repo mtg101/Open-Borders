@@ -7,6 +7,7 @@
 	INCLUDE "ob_top_border_render.asm"
 	INCLUDE "ob_font.asm"
 	INCLUDE "ob_buffer.asm"
+	INCLUDE "maths.asm"
 	
 START:
 	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
@@ -21,28 +22,34 @@ ANIMATE_MAIN:
 	CALL	TOP_BORDER_RENDER		; timining-critical flipping of top border colours
 	JR		ANIMATE_MAIN
 
-; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
-VBLANK_PERIOD_WORK:		
-	; OK so this is just guesswork and fiddling now... 
-	PUSH AF
-	PUSH BC
-	PUSH DE
-	PUSH HL
+; 8 scanline * 224 = 1,752 t-states (minus some for alignment, push/pop, calls, etc...)
+; we use it to flicker a window's colour based on pre-caculated stuff 
+VBLANK_PERIOD_WORK:					
+	PUSH AF							
+	PUSH BC							
+	PUSH DE							
+	PUSH HL							
 
-	LD		B, 120
-VBLANK_LOOP:
+	LD	 A, (FLICKER_COLOUR)		
+    LD   (ATTR_WINDOW_FLICKER), A	
+    LD   (ATTR_WINDOW_FLICKER+1), A	
+    LD   (ATTR_WINDOW_FLICKER+2), A	
+
+	LD		B, 117					
+
+VBLANK_LOOP:						
 	DJNZ	VBLANK_LOOP				
-
+									
 	; fiddling...
-	LD	A, 7
-	LD	A, 7
-	;NOP
-	;NOP
+	; LD	A, 7					
+	; LD	A, 7					
+	; NOP							
+	; NOP							
 
-	POP HL
-	POP DE
-	POP BC
-	POP AF
+	POP HL							
+	POP DE							
+	POP BC							
+	POP AF							
 
 	RET								; VBLANK_PERIOD_WORK
 									
@@ -100,6 +107,7 @@ MAIN_FRAME_1:
 
 MAIN_FRAME_2:
 	CALL 	BUFFER_SCROLL			; scroll buffer
+	CALL	IMAGE_SETUP_FLICKER		; windows go brrr..
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_3:
