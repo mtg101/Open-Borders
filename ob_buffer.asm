@@ -47,7 +47,16 @@ BUFFER_QUEUE_CHAR:
     ADD         HL, DE                  ; add offset
     LD          B, (HL)                 ; get that fx into B
 
+    ; check if it's a control fx
+    BIT         7, B                    ; if MSB is set, reset Z (make it off)
+    JR          Z, BUFFER_NORMAL_CHAR  ; we are normal if the MSB isn't set
+
+BUFFER_CONTROL_FX:
+    CALL        BUFFER_FLIP_EXX         ; it's the only effect we've got for now!
+    JR          BUFFER_CHECK_END        ; and move to next char etc
+
     ; find the char
+BUFFER_NORMAL_CHAR:
     LD          HL, BUFFER_MESSAGE      ; start of buffer
                                         ; DE is still offset
     ADD         HL, DE                  ; add offset
@@ -101,6 +110,7 @@ BUFFER_QUEUE_CHAR:
     LD          DE, PIXEL_BUFFER_ROWS + (20 * 7) + 16  
     CALL        BUFFER_QUEUE_COLOUR
 
+BUFFER_CHECK_END:
     ; back to the next char, to work out next or start again at beginning...
     LD          HL, BUFFER_MESSAGE      ; start of buffer
     LD          DE, (BUFFER_MESSAGE_OFFSET)   ; offset
@@ -205,6 +215,57 @@ BUFFER_QUEUE_COLOUR_DONE_3:
     INC         HL                  ; ready for next
 
     RET                             ; BUFFER_QUEUE_COLOUR
+
+
+    ; flip between EXX / EX AF and 2 NOPs
+BUFFER_FLIP_EXX:
+    PUSH        AF
+    PUSH        BC
+    PUSH        DE
+    PUSH        HL
+
+    ; find if EXX is turned on
+    LD          A, (TOP_BORDER_RENDER_ROW_1_EXX)
+    CP          $D9                 ; is it an EXX?
+    JR          Z, FLIP_EXX_OFF     ; yes - so turn off
+
+    ; fall through
+FLIP_EXX_ON:
+    LD          A, $D9    
+    LD          C, $08
+
+    JR          FLIP_EXX_REPLACE
+
+FLIP_EXX_OFF:
+    LD          A, $00
+    LD          C, $00
+
+    ; fall through
+FLIP_EXX_REPLACE:
+    LD          HL, TOP_BORDER_RENDER_ROW_1_EXX
+
+    LD          B, 56               ; 56 rows
+
+FLIP_EXX_LOOP:
+    LD          (HL), A
+    INC         HL
+    LD          (HL), C
+
+    ; step over to next row's EXX opcode (-1 as we already stepped over once)
+    LD          DE, TOP_BORDER_RENDER_ROW_2 - TOP_BORDER_RENDER_ROW_1 - 1
+    ADD         HL, DE
+
+    DJNZ        FLIP_EXX_LOOP
+
+    ; and we're done!
+    POP         HL
+    POP         DE
+    POP         BC
+    POP         AF
+
+    RET                             ; BUFFER_FLIP_EXX
+
+
 
 ; renders pixel buffer to render buffer
 BUFFER_RENDER:
@@ -426,7 +487,7 @@ BUFFER_MESSAGE:
     DEFB        " ALL ARE WELCOME        "  ; 24 chars
     DEFB        " OPEN MINDS        "       ; 19 chars
     DEFB        " F  N  O  R  D  S    "     ; 21 chars
-    DEFB        "Q ERIS       "             ; 13 chars
+    DEFB        "Q  ERIS      "             ; 13 chars
     DEFB        0                           ; terminator
 
 ; offset for both chars and fx
@@ -435,13 +496,17 @@ BUFFER_MESSAGE_OFFSET:
 
 ; colour / fx details for each char in MESSAGE
 BUFFER_MESSAGE_META:
-    DEFS        21, 1     ; 21 chars
-    DEFS        24, 2     ; 24 chars
-    DEFS        19, 3     ; 19 chars
-;    DEFB        " F  N  O  R  D  S       "  ; 21 chars
-    DEFB        1, 5, 5, 5, 4, 4, 4, 1, 1, 1, 3, 3, 3, 2, 2, 2, 1, 1, 1,    1, 1
+    DEFS        21, 1     ; 21 chars OPEN BORDERS
+    DEFB        $FF       ; EXX ON
+    DEFS        23, 3     ; 24-1 chars ALL ARE WELCOME
+    DEFS        18, 2     ; 19-1 chars OPEN MINDS
+    DEFB        $FF       ; EXX OFF
+;    DEFB        " F  N  O  R  D  S       "  ; 21 chars - 1
+    DEFB        1, 5, 5, 5, 4, 4, 4, 1, 1, 1, 3, 3, 3, 2, 2, 2, 1, 1, 1,    1
+    DEFB        $FF       ; EXX ON
     DEFB        8         ; glitch the Q
-    DEFS        12, 7     ; 13-1=12 chars
+    DEFS        11, 7     ; 13-2 chars
+    DEFB        $FF       ; EXX back to off
                           ; no terminator, message does that
 
 ; 15 cols, each char is 4 wide, so 4 can show
@@ -475,7 +540,7 @@ BUFFER_REGISTER_LUT:
     DEFB        $69     ; L
 
 BUFFER_REGISTER_GLITCH: ; also 8th index of RENDER_BUFFER_TEMP_ROW
-    DEFB        $CD     ; glitch (probably maked CALL act as NOP, messing up timing, causing glitch :)
+    DEFB        $CD     ; glitch (bad timing, needs chars to work with to glitch)
 
 
 

@@ -91,19 +91,19 @@ SETUP_DURING_SCREEN_DRAW:
 									; so frame 0...
 
 MAIN_FRAME_0:
-	CALL 	BUFFER_QUEUE_CHAR		; add new char if needed
+	CALL	RENDER_SMC				; self-modify the rendering registers from the buffer
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_1:
-	CALL 	BUFFER_SCROLL			; scroll buffer
+	CALL 	BUFFER_QUEUE_CHAR		; add new char if needed
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_2:
-	CALL	BUFFER_RENDER			; pixel buf to render buf
+	CALL 	BUFFER_SCROLL			; scroll buffer
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_3:
-	CALL	RENDER_SMC				; self-modify the rendering registers from the buffer
+	CALL	BUFFER_RENDER			; pixel buf to render buf
 
 MAIN_FRAME_DONE:
 	LD 		A, (MAIN_FRAME)

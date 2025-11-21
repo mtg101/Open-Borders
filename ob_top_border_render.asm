@@ -23,9 +23,10 @@ TOP_BORDER_RENDER_ROW_1:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+TOP_BORDER_RENDER_ROW_1_EXX:
+    NOP
+TOP_BORDER_RENDER_ROW_1_EX:
+    .10 nop
     
 ; row 2 / 56    
 TOP_BORDER_RENDER_ROW_2:
@@ -44,9 +45,7 @@ TOP_BORDER_RENDER_ROW_2:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 3 / 56    
 TOP_BORDER_RENDER_ROW_3:
@@ -65,9 +64,7 @@ TOP_BORDER_RENDER_ROW_3:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 4 / 56    
 TOP_BORDER_RENDER_ROW_4:
@@ -86,9 +83,7 @@ TOP_BORDER_RENDER_ROW_4:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 5 / 56    
 TOP_BORDER_RENDER_ROW_5:
@@ -107,9 +102,7 @@ TOP_BORDER_RENDER_ROW_5:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 6 / 56    
 TOP_BORDER_RENDER_ROW_6:
@@ -128,9 +121,7 @@ TOP_BORDER_RENDER_ROW_6:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 7 / 56    
 TOP_BORDER_RENDER_ROW_7:
@@ -149,9 +140,7 @@ TOP_BORDER_RENDER_ROW_7:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 8 / 56    
 TOP_BORDER_RENDER_ROW_8:
@@ -170,9 +159,7 @@ TOP_BORDER_RENDER_ROW_8:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
 
 ; row 9 / 56    
 TOP_BORDER_RENDER_ROW_9:
@@ -191,9 +178,7 @@ TOP_BORDER_RENDER_ROW_9:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 10 / 56    
 TOP_BORDER_RENDER_ROW_10:
@@ -212,9 +197,7 @@ TOP_BORDER_RENDER_ROW_10:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 11 / 56    
 TOP_BORDER_RENDER_ROW_11:
@@ -233,9 +216,7 @@ TOP_BORDER_RENDER_ROW_11:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 12 / 56    
 TOP_BORDER_RENDER_ROW_12:
@@ -254,9 +235,7 @@ TOP_BORDER_RENDER_ROW_12:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 13 / 56    
 TOP_BORDER_RENDER_ROW_13:
@@ -275,9 +254,7 @@ TOP_BORDER_RENDER_ROW_13:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 14 / 56    
 TOP_BORDER_RENDER_ROW_14:
@@ -296,9 +273,7 @@ TOP_BORDER_RENDER_ROW_14:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 15 / 56    
 TOP_BORDER_RENDER_ROW_15:
@@ -317,9 +292,7 @@ TOP_BORDER_RENDER_ROW_15:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 16 / 56    
 TOP_BORDER_RENDER_ROW_16:
@@ -338,9 +311,7 @@ TOP_BORDER_RENDER_ROW_16:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
 
 ; row 17 / 56    
 TOP_BORDER_RENDER_ROW_17:
@@ -359,9 +330,7 @@ TOP_BORDER_RENDER_ROW_17:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 18 / 56    
 TOP_BORDER_RENDER_ROW_18:
@@ -380,9 +349,7 @@ TOP_BORDER_RENDER_ROW_18:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 19 / 56    
 TOP_BORDER_RENDER_ROW_19:
@@ -401,9 +368,7 @@ TOP_BORDER_RENDER_ROW_19:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 20 / 56    
 TOP_BORDER_RENDER_ROW_20:
@@ -422,9 +387,7 @@ TOP_BORDER_RENDER_ROW_20:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 21 / 56    
 TOP_BORDER_RENDER_ROW_21:
@@ -443,9 +406,7 @@ TOP_BORDER_RENDER_ROW_21:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 22 / 56    
 TOP_BORDER_RENDER_ROW_22:
@@ -464,9 +425,7 @@ TOP_BORDER_RENDER_ROW_22:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 23 / 56    
 TOP_BORDER_RENDER_ROW_23:
@@ -485,9 +444,7 @@ TOP_BORDER_RENDER_ROW_23:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 24 / 56    
 TOP_BORDER_RENDER_ROW_24:
@@ -506,9 +463,7 @@ TOP_BORDER_RENDER_ROW_24:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
 
 ; row 25 / 56    
 TOP_BORDER_RENDER_ROW_25:
@@ -527,9 +482,7 @@ TOP_BORDER_RENDER_ROW_25:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 26 / 56    
 TOP_BORDER_RENDER_ROW_26:
@@ -548,9 +501,7 @@ TOP_BORDER_RENDER_ROW_26:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 27 / 56    
 TOP_BORDER_RENDER_ROW_27:
@@ -569,9 +520,7 @@ TOP_BORDER_RENDER_ROW_27:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 28 / 56    
 TOP_BORDER_RENDER_ROW_28:
@@ -590,9 +539,7 @@ TOP_BORDER_RENDER_ROW_28:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 29 / 56    
 TOP_BORDER_RENDER_ROW_29:
@@ -611,9 +558,7 @@ TOP_BORDER_RENDER_ROW_29:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 30 / 56    
 TOP_BORDER_RENDER_ROW_30:
@@ -632,9 +577,7 @@ TOP_BORDER_RENDER_ROW_30:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 31 / 56    
 TOP_BORDER_RENDER_ROW_31:
@@ -653,9 +596,7 @@ TOP_BORDER_RENDER_ROW_31:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 32 / 56    
 TOP_BORDER_RENDER_ROW_32:
@@ -674,9 +615,7 @@ TOP_BORDER_RENDER_ROW_32:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
 
 ; row 33 / 56    
 TOP_BORDER_RENDER_ROW_33:
@@ -695,9 +634,7 @@ TOP_BORDER_RENDER_ROW_33:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 34 / 56    
 TOP_BORDER_RENDER_ROW_34:
@@ -716,9 +653,7 @@ TOP_BORDER_RENDER_ROW_34:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 35 / 56    
 TOP_BORDER_RENDER_ROW_35:
@@ -737,9 +672,7 @@ TOP_BORDER_RENDER_ROW_35:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 36 / 56    
 TOP_BORDER_RENDER_ROW_36:
@@ -758,9 +691,7 @@ TOP_BORDER_RENDER_ROW_36:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 37 / 56    
 TOP_BORDER_RENDER_ROW_37:
@@ -779,9 +710,7 @@ TOP_BORDER_RENDER_ROW_37:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 38 / 56    
 TOP_BORDER_RENDER_ROW_38:
@@ -800,9 +729,7 @@ TOP_BORDER_RENDER_ROW_38:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 39 / 56    
 TOP_BORDER_RENDER_ROW_39:
@@ -821,9 +748,7 @@ TOP_BORDER_RENDER_ROW_39:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 40 / 56    
 TOP_BORDER_RENDER_ROW_40:
@@ -842,9 +767,7 @@ TOP_BORDER_RENDER_ROW_40:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
 
 ; row 41 / 56    
 TOP_BORDER_RENDER_ROW_41:
@@ -863,9 +786,7 @@ TOP_BORDER_RENDER_ROW_41:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 42 / 56    
 TOP_BORDER_RENDER_ROW_42:
@@ -884,9 +805,7 @@ TOP_BORDER_RENDER_ROW_42:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 43 / 56    
 TOP_BORDER_RENDER_ROW_43:
@@ -905,9 +824,7 @@ TOP_BORDER_RENDER_ROW_43:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 44 / 56    
 TOP_BORDER_RENDER_ROW_44:
@@ -926,9 +843,7 @@ TOP_BORDER_RENDER_ROW_44:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 45 / 56    
 TOP_BORDER_RENDER_ROW_45:
@@ -947,9 +862,7 @@ TOP_BORDER_RENDER_ROW_45:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 46 / 56    
 TOP_BORDER_RENDER_ROW_46:
@@ -968,9 +881,7 @@ TOP_BORDER_RENDER_ROW_46:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 47 / 56    
 TOP_BORDER_RENDER_ROW_47:
@@ -989,9 +900,7 @@ TOP_BORDER_RENDER_ROW_47:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 48 / 56    
 TOP_BORDER_RENDER_ROW_48:
@@ -1010,9 +919,7 @@ TOP_BORDER_RENDER_ROW_48:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
 
 ; row 49 / 56    
 TOP_BORDER_RENDER_ROW_49:
@@ -1031,9 +938,7 @@ TOP_BORDER_RENDER_ROW_49:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 50 / 56    
 TOP_BORDER_RENDER_ROW_50:
@@ -1052,9 +957,7 @@ TOP_BORDER_RENDER_ROW_50:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 51 / 56    
 TOP_BORDER_RENDER_ROW_51:
@@ -1073,9 +976,7 @@ TOP_BORDER_RENDER_ROW_51:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 52 / 56    
 TOP_BORDER_RENDER_ROW_52:
@@ -1094,9 +995,7 @@ TOP_BORDER_RENDER_ROW_52:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 53 / 56    
 TOP_BORDER_RENDER_ROW_53:
@@ -1115,9 +1014,7 @@ TOP_BORDER_RENDER_ROW_53:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 54 / 56    
 TOP_BORDER_RENDER_ROW_54:
@@ -1136,9 +1033,7 @@ TOP_BORDER_RENDER_ROW_54:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 55 / 56    
 TOP_BORDER_RENDER_ROW_55:
@@ -1157,9 +1052,7 @@ TOP_BORDER_RENDER_ROW_55:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-    EXX
-    EX  AF
-    .9 nop
+    .11 nop
     
 ; row 56 / 56    
 TOP_BORDER_RENDER_ROW_56:
@@ -1178,10 +1071,8 @@ TOP_BORDER_RENDER_ROW_56:
     OUT (C), A
     OUT (C), B
     OUT (C), D
-;    EXX
-    EX  AF
-    .9 nop        ; no need on last row
-                    ; and need time to make border nack to black
+    .11 nop
+          
 
     OUT     (C), 0  ; set back to black
 
@@ -1212,7 +1103,7 @@ RENDER_SMC_STRIPE_LOOP:
     INC         DE                      ; step over opcode
     DJNZ        RENDER_SMC_STRIPE_LOOP
 
-    .10 INC     DE                      ; 11 nops, but one opcode from loop not needed
+    .10 INC     DE                      ; 11 nops / EXX but one opcode from loop not needed
 
     POP         BC                      ; for inner loop
     DJNZ        RENDER_SMC_ROW_LOOP     ; RENDER_SMC_ROW_LOOP
