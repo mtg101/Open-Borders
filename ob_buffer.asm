@@ -332,9 +332,14 @@ BUFFER_RENDER_SINE:
     PUSH        DE
     PUSH        HL
 
+    LD          A, (SINE_FRAME)
+    INC         A                           ; inc frame to save
+    LD          (SINE_FRAME), A             ; save frame
+    DEC         A                           ; dec frame to use
+
     LD          B, 15                       ; 15 cols
-    LD          D, 0
 BUFFER_RENDER_SINE_LOOP:
+    LD          D, 0
     LD          E, B
     DEC         DE                           ; col offset 0-14
 
@@ -350,7 +355,8 @@ BUFFER_RENDER_SINE_LOOP:
     RET                                     ; BUFFER_RENDER_SINE
 
 
-; D is col offset
+; DE is col offset
+; A is sine frame
 BUFFER_LOAD_TEMP_COL:
     PUSH        AF
     PUSH        BC
@@ -358,12 +364,8 @@ BUFFER_LOAD_TEMP_COL:
     PUSH        HL
 
     ; sine index
-    LD          A, (SINE_FRAME)
-    INC         A                           ; inc frame to save
-    LD          (SINE_FRAME), A             ; save frame
-    DEC         A                           ; dec frame to use
     AND         %00111111                   ; base 0-63 offset
-    ADD         D                           ; add col offset
+    ADD         E                           ; add col offset
     AND         %00111111                   ; 0-63 again for actual offset
     LD          E, A                        ; E stores actual offset
     LD          D, 0                        ; 16bit needed, done with offset D now
@@ -374,12 +376,12 @@ BUFFER_LOAD_TEMP_COL:
     LD          A, (HL)                     ; A is the offset
     LD          E, A                        ; store in E
     LD          D, 0                        ; 16bit needed, done with offset D now
+    LD          HL, RENDER_BUFFER_TEMP_COL
 
     CP          0
     JR          Z, BUFFER_LOAD_TEMP_COL_CHAR    ; 0 index no top blanks
 
 ; top blanks
-    LD          HL, RENDER_BUFFER_TEMP_COL
 ;     LD          B, A
 ; BUFFER_LOAD_TEMP_COL_TOP_LOOP:
 ;     LD          (HL), 0                     ; blank 
@@ -436,7 +438,7 @@ BUFFER_LOAD_TEMP_COL_DONE:
     RET                                     ; BUFFER_LOAD_TEMP_COL
 
 
-; D is col offset
+; DE is col offset
 BUFFER_RENDER_COL:
     PUSH        AF
     PUSH        BC
