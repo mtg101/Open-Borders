@@ -323,7 +323,471 @@ BUFFER_RENDER:
     POP         BC
     POP         AF
 
-    RET                             ; BUFFER_RENDER
+    RET                                     ; BUFFER_RENDER
+
+; renders pixel buffer to render buffer - sine version
+BUFFER_RENDER_SINE:
+    PUSH        AF
+    PUSH        BC
+    PUSH        DE
+    PUSH        HL
+
+    LD          B, 15                       ; 15 cols
+    LD          D, 0
+BUFFER_RENDER_SINE_LOOP:
+    LD          E, B
+    DEC         DE                           ; col offset 0-14
+
+    CALL        BUFFER_LOAD_TEMP_COL        ; loads the values to a buffer
+    CALL        BUFFER_RENDER_COL           ; blits from buffer
+    DJNZ        BUFFER_RENDER_SINE_LOOP
+
+    POP         HL
+    POP         DE
+    POP         BC
+    POP         AF
+
+    RET                                     ; BUFFER_RENDER_SINE
+
+
+; D is col offset
+BUFFER_LOAD_TEMP_COL:
+    PUSH        AF
+    PUSH        BC
+    PUSH        DE
+    PUSH        HL
+
+    ; sine index
+    LD          A, (SINE_FRAME)
+    INC         A                           ; inc frame to save
+    LD          (SINE_FRAME), A             ; save frame
+    DEC         A                           ; dec frame to use
+    AND         %00111111                   ; base 0-63 offset
+    ADD         D                           ; add col offset
+    AND         %00111111                   ; 0-63 again for actual offset
+    LD          E, A                        ; E stores actual offset
+    LD          D, 0                        ; 16bit needed, done with offset D now
+
+    ; get row offset in DE
+    LD          HL, SINE_LUT
+    ADD         HL, DE                      ; HL points to the offset
+    LD          A, (HL)                     ; A is the offset
+    LD          E, A                        ; store in E
+    LD          D, 0                        ; 16bit needed, done with offset D now
+
+    CP          0
+    JR          Z, BUFFER_LOAD_TEMP_COL_CHAR    ; 0 index no top blanks
+
+; top blanks
+    LD          HL, RENDER_BUFFER_TEMP_COL
+;     LD          B, A
+; BUFFER_LOAD_TEMP_COL_TOP_LOOP:
+;     LD          (HL), 0                     ; blank 
+;     INC         HL                          ; next temp buffer position
+
+;     DJNZ        BUFFER_LOAD_TEMP_COL_TOP_LOOP
+
+    ; char - alway 8 pixels at 4 rows each
+BUFFER_LOAD_TEMP_COL_CHAR:
+;     LD          B, 8                        ; 8 pixel rows
+; BUFFER_LOAD_TEMP_COL_CHAR_LOOP:
+;     PUSH        HL
+;     LD          HL, PIXEL_BUFFER_ROWS       ; start of buff
+;     ADD         HL, DE                      ; add col offset
+;     LD          A, (HL)                     ; get pixel colour
+;     POP         HL
+
+;     LD          (HL), A                     ; pixel colour
+;     INC         HL                          ; next temp buffer position
+
+;     LD          (HL), A                     ; pixel colour
+;     INC         HL                          ; next temp buffer position
+
+;     LD          (HL), A                     ; pixel colour
+;     INC         HL                          ; next temp buffer position
+
+;     LD          (HL), A                     ; pixel colour
+;     INC         HL                          ; next temp buffer position
+
+;     DJNZ        BUFFER_LOAD_TEMP_COL_CHAR_LOOP
+
+
+
+; bottom blanks
+    LD          A, E                        ; offset back in A
+    CP          23                          
+    JR          Z, BUFFER_LOAD_TEMP_COL_DONE    ; 23 index no bottom blanks
+    LD          A, 23
+    SUB         E                           ; 23 - offset is number of bottom blanks
+
+    LD          B, A
+BUFFER_LOAD_TEMP_COL_BOTTOM_LOOP:
+    LD          (HL), 0                     ; blank 
+    INC         HL                          ; next temp buffer position
+
+    DJNZ        BUFFER_LOAD_TEMP_COL_BOTTOM_LOOP
+
+BUFFER_LOAD_TEMP_COL_DONE:
+    POP         HL
+    POP         DE
+    POP         BC
+    POP         AF
+
+    RET                                     ; BUFFER_LOAD_TEMP_COL
+
+
+; D is col offset
+BUFFER_RENDER_COL:
+    PUSH        AF
+    PUSH        BC
+    PUSH        DE
+    PUSH        HL
+
+    LD          HL, RENDER_BUFFER_ROW_1
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_2
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 1
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_3
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 2
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_4
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 3
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_5
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 4
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_6
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 5
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_7
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 6
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_8
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 7
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_9
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 8
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_10
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 9
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_11
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 10
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_12
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 11
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_13
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 12
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_14
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 13
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_15
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 14
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_16
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 15
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_17
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 16
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_18
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 17
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_19
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 18
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_20
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 19
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_21
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 20
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_22
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 21
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_23
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 22
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_24
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 23
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_25
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 24
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_26
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 25
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_27
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 26
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_28
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 27
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_29
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 28
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_30
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 29
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_31
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 30
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_32
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 31
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_33
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 32
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_34
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 33
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_35
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 34
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_36
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 35
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_37
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 36
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_38
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 37
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_39
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 38
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_40
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 39
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_41
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 40
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_42
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 41
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_43
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 42
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_44
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 43
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_45
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 44
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_46
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 45
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_47
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 46
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_48
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 47
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_49
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 48
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_50
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 49
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_51
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 50
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_52
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 51
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_53
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 52
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_54
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 53
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_55
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 54
+    LD          A, (BC)
+    LD          (HL), A
+
+    LD          HL, RENDER_BUFFER_ROW_56
+    ADD         HL, DE
+    LD          BC, RENDER_BUFFER_TEMP_COL + 55
+    LD          A, (BC)
+    LD          (HL), A
+
+
+    POP         HL
+    POP         DE
+    POP         BC
+    POP         AF
+
+    RET                                     ; BUFFER_RENDER_COL
+
+
 
 BUFFER_RENDER_7:
     ; render RENDER_BUFFER_TEMP_ROW 7 times
@@ -519,7 +983,22 @@ BUFFER_MESSAGE_META:
 ; x 8 rows 
 ; = 160 bytes
 PIXEL_BUFFER_ROWS:
-    DEFS    160
+PIXEL_BUFFER_ROW_1:
+    DEFS    20
+PIXEL_BUFFER_ROW_2:
+    DEFS    20
+PIXEL_BUFFER_ROW_3:
+    DEFS    20
+PIXEL_BUFFER_ROW_4:
+    DEFS    20
+PIXEL_BUFFER_ROW_5:
+    DEFS    20
+PIXEL_BUFFER_ROW_6:
+    DEFS    20
+PIXEL_BUFFER_ROW_7:
+    DEFS    20
+PIXEL_BUFFER_ROW_8:
+    DEFS    20
 
 ; render buffer for actual border
 ; stores the register values to SMC
@@ -527,10 +1006,123 @@ PIXEL_BUFFER_ROWS:
 ; 15 wide as that's how many stripes can display
 ; 56 * 15 = 840
 RENDER_BUFFER_ROWS:
-    DEFS    840
-
-RENDER_BUFFER_TEMP_ROW:
+RENDER_BUFFER_ROW_1:
     DEFS    15
+RENDER_BUFFER_ROW_2:
+    DEFS    15
+RENDER_BUFFER_ROW_3:
+    DEFS    15
+RENDER_BUFFER_ROW_4:
+    DEFS    15
+RENDER_BUFFER_ROW_5:
+    DEFS    15
+RENDER_BUFFER_ROW_6:
+    DEFS    15
+RENDER_BUFFER_ROW_7:
+    DEFS    15
+RENDER_BUFFER_ROW_8:
+    DEFS    15
+RENDER_BUFFER_ROW_9:
+    DEFS    15
+RENDER_BUFFER_ROW_10:
+    DEFS    15
+RENDER_BUFFER_ROW_11:
+    DEFS    15
+RENDER_BUFFER_ROW_12:
+    DEFS    15
+RENDER_BUFFER_ROW_13:
+    DEFS    15
+RENDER_BUFFER_ROW_14:
+    DEFS    15
+RENDER_BUFFER_ROW_15:
+    DEFS    15
+RENDER_BUFFER_ROW_16:
+    DEFS    15
+RENDER_BUFFER_ROW_17:
+    DEFS    15
+RENDER_BUFFER_ROW_18:
+    DEFS    15
+RENDER_BUFFER_ROW_19:
+    DEFS    15
+RENDER_BUFFER_ROW_20:
+    DEFS    15
+RENDER_BUFFER_ROW_21:
+    DEFS    15
+RENDER_BUFFER_ROW_22:
+    DEFS    15
+RENDER_BUFFER_ROW_23:
+    DEFS    15
+RENDER_BUFFER_ROW_24:
+    DEFS    15
+RENDER_BUFFER_ROW_25:
+    DEFS    15
+RENDER_BUFFER_ROW_26:
+    DEFS    15
+RENDER_BUFFER_ROW_27:
+    DEFS    15
+RENDER_BUFFER_ROW_28:
+    DEFS    15
+RENDER_BUFFER_ROW_29:
+    DEFS    15
+RENDER_BUFFER_ROW_30:
+    DEFS    15
+RENDER_BUFFER_ROW_31:
+    DEFS    15
+RENDER_BUFFER_ROW_32:
+    DEFS    15
+RENDER_BUFFER_ROW_33:
+    DEFS    15
+RENDER_BUFFER_ROW_34:
+    DEFS    15
+RENDER_BUFFER_ROW_35:
+    DEFS    15
+RENDER_BUFFER_ROW_36:
+    DEFS    15
+RENDER_BUFFER_ROW_37:
+    DEFS    15
+RENDER_BUFFER_ROW_38:
+    DEFS    15
+RENDER_BUFFER_ROW_39:
+    DEFS    15
+RENDER_BUFFER_ROW_40:
+    DEFS    15
+RENDER_BUFFER_ROW_41:
+    DEFS    15
+RENDER_BUFFER_ROW_42:
+    DEFS    15
+RENDER_BUFFER_ROW_43:
+    DEFS    15
+RENDER_BUFFER_ROW_44:
+    DEFS    15
+RENDER_BUFFER_ROW_45:
+    DEFS    15
+RENDER_BUFFER_ROW_46:
+    DEFS    15
+RENDER_BUFFER_ROW_47:
+    DEFS    15
+RENDER_BUFFER_ROW_48:
+    DEFS    15
+RENDER_BUFFER_ROW_49:
+    DEFS    15
+RENDER_BUFFER_ROW_50:
+    DEFS    15
+RENDER_BUFFER_ROW_51:
+    DEFS    15
+RENDER_BUFFER_ROW_52:
+    DEFS    15
+RENDER_BUFFER_ROW_53:
+    DEFS    15
+RENDER_BUFFER_ROW_54:
+    DEFS    15
+RENDER_BUFFER_ROW_55:
+    DEFS    15
+RENDER_BUFFER_ROW_56:
+    DEFS    15
+
+; never used together, so share same mem
+RENDER_BUFFER_TEMP_ROW: ; 15
+RENDER_BUFFER_TEMP_COL: ; 56
+    DEFS    56
 
 BUFFER_REGISTER_LUT:
     DEFB        $71     ; 0 (black)
@@ -545,6 +1137,7 @@ BUFFER_REGISTER_LUT:
 BUFFER_REGISTER_GLITCH: ; also 8th index of RENDER_BUFFER_TEMP_ROW
     DEFB        $CD     ; glitch (bad timing, needs chars to work with to glitch)
 
-
+SINE_FRAME:
+    DEFB        0
 
 

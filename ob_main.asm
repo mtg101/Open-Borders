@@ -111,8 +111,8 @@ MAIN_FRAME_2:
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_3:
-	CALL	BUFFER_RENDER			; pixel buf to render buf
-
+;	CALL	BUFFER_RENDER			; pixel buf to render buf
+	CALL 	BUFFER_RENDER_SINE		; pixel buf to render buf, with sine
 MAIN_FRAME_DONE:
 	LD 		A, (MAIN_FRAME)
 	INC 	A
