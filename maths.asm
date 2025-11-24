@@ -34,7 +34,7 @@ NEXT_RNG:
 
 
 SINE_LUT:
-    DEFB        12
+    DEFB        12      ; 0
     DEFB        13
     DEFB        14
     DEFB        15
@@ -44,7 +44,7 @@ SINE_LUT:
     DEFB        19
     DEFB        20
     DEFB        20
-    DEFB        21
+    DEFB        21      ; 10
     DEFB        22
     DEFB        22
     DEFB        23
@@ -54,7 +54,7 @@ SINE_LUT:
     DEFB        23
     DEFB        23
     DEFB        23
-    DEFB        22
+    DEFB        22      ; 20
     DEFB        22
     DEFB        21
     DEFB        20

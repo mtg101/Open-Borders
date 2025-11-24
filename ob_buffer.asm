@@ -373,45 +373,64 @@ BUFFER_LOAD_TEMP_COL:
     ; get row offset in DE
     LD          HL, SINE_LUT
     ADD         HL, DE                      ; HL points to the offset
-    LD          A, (HL)                     ; A is the offset
-    LD          E, A                        ; store in E
-    LD          D, 0                        ; 16bit needed, done with offset D now
+    LD          A, (HL)                     ; A is the row offset
+
+    LD          IX, PIXEL_BUFFER_ROWS       ; start of pixel buffer
+    ADD         IX, DE                      ; offset to column
+
+    LD          E, A                        ; store row offet in E
+    LD          D, 0                        ; 16bit needed, done with col offset DE now
     LD          HL, RENDER_BUFFER_TEMP_COL
 
     CP          0
     JR          Z, BUFFER_LOAD_TEMP_COL_CHAR    ; 0 index no top blanks
 
 ; top blanks
-;     LD          B, A
-; BUFFER_LOAD_TEMP_COL_TOP_LOOP:
-;     LD          (HL), 0                     ; blank 
-;     INC         HL                          ; next temp buffer position
+    LD          B, A
+BUFFER_LOAD_TEMP_COL_TOP_LOOP:
+    LD          (HL), $71                   ; blank / OUT (C), 0 = $71
+    INC         HL                          ; next temp buffer position
 
-;     DJNZ        BUFFER_LOAD_TEMP_COL_TOP_LOOP
+    DJNZ        BUFFER_LOAD_TEMP_COL_TOP_LOOP
 
     ; char - alway 8 pixels at 4 rows each
 BUFFER_LOAD_TEMP_COL_CHAR:
-;     LD          B, 8                        ; 8 pixel rows
-; BUFFER_LOAD_TEMP_COL_CHAR_LOOP:
-;     PUSH        HL
-;     LD          HL, PIXEL_BUFFER_ROWS       ; start of buff
-;     ADD         HL, DE                      ; add col offset
-;     LD          A, (HL)                     ; get pixel colour
-;     POP         HL
+    LD          B, 8                        ; 8 pixel rows
+BUFFER_LOAD_TEMP_COL_CHAR_LOOP:
+    PUSH        BC
+    PUSH        DE
+    PUSH        HL
 
-;     LD          (HL), A                     ; pixel colour
-;     INC         HL                          ; next temp buffer position
+    LD          A, (IX)                     ; get pixel colour
+    LD          DE, 20                      ; pixel buffer has extra cols
+    ADD         IX, DE                      ; move to next row         
 
-;     LD          (HL), A                     ; pixel colour
-;     INC         HL                          ; next temp buffer position
+    LD          B, 0                        ; needed for 16bit ADD
+    ; convert pixel to register
+    LD          C, A                        ; BC is now offset
+    LD          HL, BUFFER_REGISTER_LUT     ; base LUT
+    ADD         HL, BC                      ; HL points to reg in LUT
+    LD          A, (HL)                     ; A has reg
 
-;     LD          (HL), A                     ; pixel colour
-;     INC         HL                          ; next temp buffer position
+    POP         HL
+    POP         DE
+    POP         BC
+    
 
-;     LD          (HL), A                     ; pixel colour
-;     INC         HL                          ; next temp buffer position
+    ; set 4 rows to that colour (0 from pixel buffer works)
+    LD          (HL), A                     ; reg
+    INC         HL                          ; next temp buffer position
 
-;     DJNZ        BUFFER_LOAD_TEMP_COL_CHAR_LOOP
+    LD          (HL), A                     ; reg
+    INC         HL                          ; next temp buffer position
+
+    LD          (HL), A                     ; reg
+    INC         HL                          ; next temp buffer position
+
+    LD          (HL), A                     ; reg
+    INC         HL                          ; next temp buffer position
+
+    DJNZ        BUFFER_LOAD_TEMP_COL_CHAR_LOOP
 
 
 
@@ -424,7 +443,7 @@ BUFFER_LOAD_TEMP_COL_CHAR:
 
     LD          B, A
 BUFFER_LOAD_TEMP_COL_BOTTOM_LOOP:
-    LD          (HL), 0                     ; blank 
+    LD          (HL), $71                   ; blank / OUT (C), 0 = $71
     INC         HL                          ; next temp buffer position
 
     DJNZ        BUFFER_LOAD_TEMP_COL_BOTTOM_LOOP
@@ -1007,119 +1026,120 @@ PIXEL_BUFFER_ROW_8:
 ; 56 row of course
 ; 15 wide as that's how many stripes can display
 ; 56 * 15 = 840
+; all $71 for OUT (C), 0
 RENDER_BUFFER_ROWS:
 RENDER_BUFFER_ROW_1:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_2:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_3:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_4:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_5:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_6:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_7:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_8:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_9:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_10:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_11:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_12:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_13:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_14:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_15:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_16:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_17:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_18:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_19:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_20:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_21:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_22:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_23:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_24:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_25:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_26:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_27:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_28:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_29:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_30:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_31:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_32:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_33:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_34:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_35:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_36:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_37:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_38:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_39:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_40:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_41:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_42:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_43:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_44:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_45:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_46:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_47:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_48:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_49:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_50:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_51:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_52:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_53:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_54:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_55:
-    DEFS    15
+    DEFS    15, $71
 RENDER_BUFFER_ROW_56:
-    DEFS    15
+    DEFS    15, $71
 
 ; never used together, so share same mem
 RENDER_BUFFER_TEMP_ROW: ; 15
