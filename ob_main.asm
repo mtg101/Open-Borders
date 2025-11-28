@@ -103,16 +103,17 @@ MAIN_FRAME_0:
 
 MAIN_FRAME_1:
 	CALL 	BUFFER_QUEUE_CHAR		; add new char if needed
+	CALL 	BUFFER_SCROLL			; scroll buffer
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_2:
-	CALL 	BUFFER_SCROLL			; scroll buffer
 	CALL	IMAGE_SETUP_FLICKER		; windows go brrr..
-	JR 		MAIN_FRAME_DONE
+	CALL 	BUFFER_RENDER_SINE_1		; pixel buf to render buf, with sine
+B	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_3:
 ;	CALL	BUFFER_RENDER			; pixel buf to render buf
-	CALL 	BUFFER_RENDER_SINE		; pixel buf to render buf, with sine
+	CALL 	BUFFER_RENDER_SINE_2		; pixel buf to render buf, with sine
 MAIN_FRAME_DONE:
 	LD 		A, (MAIN_FRAME)
 	INC 	A

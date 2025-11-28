@@ -326,7 +326,8 @@ BUFFER_RENDER:
     RET                                     ; BUFFER_RENDER
 
 ; renders pixel buffer to render buffer - sine version
-BUFFER_RENDER_SINE:
+; part 1 - too slow for single frame
+BUFFER_RENDER_SINE_1:
     PUSH        AF
     PUSH        BC
     PUSH        DE
@@ -337,22 +338,59 @@ BUFFER_RENDER_SINE:
     LD          (SINE_FRAME), A             ; save frame
     DEC         A                           ; dec frame to use
 
-    LD          B, 15                       ; 15 cols
-BUFFER_RENDER_SINE_LOOP:
+    LD          B, 9                        ; first 9 cols / 15
+BUFFER_RENDER_SINE_LOOP_1:
     LD          D, 0
     LD          E, B
     DEC         DE                           ; col offset 0-14
 
     CALL        BUFFER_LOAD_TEMP_COL        ; loads the values to a buffer
     CALL        BUFFER_RENDER_COL           ; blits from buffer
-    DJNZ        BUFFER_RENDER_SINE_LOOP
+    DJNZ        BUFFER_RENDER_SINE_LOOP_1
 
     POP         HL
     POP         DE
     POP         BC
     POP         AF
 
-    RET                                     ; BUFFER_RENDER_SINE
+    RET                                     ; BUFFER_RENDER_SINE_1
+
+; renders pixel buffer to render buffer - sine version
+; part 2 - too slow for single frame
+BUFFER_RENDER_SINE_2:
+    PUSH        AF
+    PUSH        BC
+    PUSH        DE
+    PUSH        HL
+
+    LD          A, (SINE_FRAME)
+    INC         A                           ; inc frame to save
+    LD          (SINE_FRAME), A             ; save frame
+    DEC         A                           ; dec frame to use
+
+    LD          B, 6                       ; done 9, 6 left
+BUFFER_RENDER_SINE_LOOP_2:
+    LD          D, 0
+    LD          E, B
+    INC         DE                          ; plus... somhow 8? 9-1? it works...
+    INC         DE                          
+    INC         DE                          
+    INC         DE                          
+    INC         DE                          
+    INC         DE                          
+    INC         DE                          
+    INC         DE                          
+
+    CALL        BUFFER_LOAD_TEMP_COL        ; loads the values to a buffer
+    CALL        BUFFER_RENDER_COL           ; blits from buffer
+    DJNZ        BUFFER_RENDER_SINE_LOOP_2
+
+    POP         HL
+    POP         DE
+    POP         BC
+    POP         AF
+
+    RET                                     ; BUFFER_RENDER_SINE_2
 
 
 ; DE is col offset
@@ -362,6 +400,11 @@ BUFFER_LOAD_TEMP_COL:
     PUSH        BC
     PUSH        DE
     PUSH        HL
+
+    ; sort out pixel ptr for the char
+    LD          HL, PIXEL_BUFFER_ROWS       ; start of pixel buffer
+    ADD         HL, DE                      ; offset to column
+    LD          (PIXEL_BUF_PTR), HL         
 
     ; sine index
     AND         %00111111                   ; base 0-63 offset
@@ -374,9 +417,6 @@ BUFFER_LOAD_TEMP_COL:
     LD          HL, SINE_LUT
     ADD         HL, DE                      ; HL points to the offset
     LD          A, (HL)                     ; A is the row offset
-
-    LD          IX, PIXEL_BUFFER_ROWS       ; start of pixel buffer
-    ADD         IX, DE                      ; offset to column
 
     LD          E, A                        ; store row offet in E
     LD          D, 0                        ; 16bit needed, done with col offset DE now
@@ -401,9 +441,11 @@ BUFFER_LOAD_TEMP_COL_CHAR_LOOP:
     PUSH        DE
     PUSH        HL
 
-    LD          A, (IX)                     ; get pixel colour
+    LD          HL, (PIXEL_BUF_PTR)
+    LD          A, (HL)                     ; get pixel colour
     LD          DE, 20                      ; pixel buffer has extra cols
-    ADD         IX, DE                      ; move to next row         
+    ADD         HL, DE                      ; move to next row         
+    LD          (PIXEL_BUF_PTR), HL
 
     LD          B, 0                        ; needed for 16bit ADD
     ; convert pixel to register
@@ -416,7 +458,6 @@ BUFFER_LOAD_TEMP_COL_CHAR_LOOP:
     POP         DE
     POP         BC
     
-
     ; set 4 rows to that colour (0 from pixel buffer works)
     LD          (HL), A                     ; reg
     INC         HL                          ; next temp buffer position
@@ -432,14 +473,12 @@ BUFFER_LOAD_TEMP_COL_CHAR_LOOP:
 
     DJNZ        BUFFER_LOAD_TEMP_COL_CHAR_LOOP
 
-
-
 ; bottom blanks
     LD          A, E                        ; offset back in A
-    CP          23                          
-    JR          Z, BUFFER_LOAD_TEMP_COL_DONE    ; 23 index no bottom blanks
-    LD          A, 23
-    SUB         E                           ; 23 - offset is number of bottom blanks
+    CP          24                          
+    JR          Z, BUFFER_LOAD_TEMP_COL_DONE    ; 24 index no bottom blanks
+    LD          A, 24
+    SUB         E                           ; 24 - offset is number of bottom blanks
 
     LD          B, A
 BUFFER_LOAD_TEMP_COL_BOTTOM_LOOP:
@@ -1162,4 +1201,5 @@ BUFFER_REGISTER_GLITCH: ; also 8th index of RENDER_BUFFER_TEMP_ROW
 SINE_FRAME:
     DEFB        0
 
-
+PIXEL_BUF_PTR:
+    DEFW        0
