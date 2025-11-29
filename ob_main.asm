@@ -7,6 +7,8 @@
 	INCLUDE "ob_top_border_render.asm"
 	INCLUDE "ob_font.asm"
 	INCLUDE "ob_buffer.asm"
+	INCLUDE "ob_buffer_long.asm"
+	INCLUDE "ob_script.asm"
 	INCLUDE "maths.asm"
 	
 START:
@@ -108,12 +110,37 @@ MAIN_FRAME_1:
 
 MAIN_FRAME_2:
 	CALL	IMAGE_SETUP_FLICKER		; windows go brrr..
+
+	LD		A, (SINE_STATE)		
+	CP 		1
+	JR 		Z, MAIN_FRAME_2_SINE
+
+	; it's regular stuff...
+	; which is nothing... could optmize this later if i ever need 10 t-states...	
+	JR 		MAIN_FRAME_2_DONE
+
+MAIN_FRAME_2_SINE:
 	CALL 	BUFFER_RENDER_SINE_1		; pixel buf to render buf, with sine
-B	JR 		MAIN_FRAME_DONE
+
+MAIN_FRAME_2_DONE:
+
+	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_3:
-;	CALL	BUFFER_RENDER			; pixel buf to render buf
+	LD		A, (SINE_STATE)		
+	CP 		1
+	JR 		Z, MAIN_FRAME_3_SINE
+
+	; it's regular stuff...
+	CALL 	BUFFER_RENDER
+	JR 		MAIN_FRAME_3_DONE
+
+MAIN_FRAME_3_SINE:
 	CALL 	BUFFER_RENDER_SINE_2		; pixel buf to render buf, with sine
+
+MAIN_FRAME_3_DONE:
+
+
 MAIN_FRAME_DONE:
 	LD 		A, (MAIN_FRAME)
 	INC 	A
