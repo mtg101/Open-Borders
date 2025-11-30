@@ -30,7 +30,7 @@ BUFFER_MESSAGE_META:
     DEFB        $FF       ; EXX back to off
 
     DEFB        $BF       ; sine on
-    DEFS        23, 6     ; 24-1 chars They paved paradise
+    DEFS        23, 5     ; 24-1 chars They paved paradise
     DEFS        31, 4     ; 32-1 chars and put up a parking lot :(
     DEFB        $BF       ; sine off 
                           ; no terminator, message does that
