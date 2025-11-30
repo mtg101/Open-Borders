@@ -61,7 +61,7 @@ INITIAL_SETUP:
 	OUT		(C), 0					; set border black
 
 	LD 		A, COL_BLU				; main palette
-	LD		B, COL_RED				; all 1s except colour, to avoid C causing sound
+	LD		B, COL_RED				
 	LD		D, COL_MAG
 	LD		E, COL_GRN
 	LD		H, COL_CYN
