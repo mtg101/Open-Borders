@@ -123,7 +123,6 @@ MAIN_FRAME_2_SINE:
 	CALL 	BUFFER_RENDER_SINE_1		; pixel buf to render buf, with sine
 
 MAIN_FRAME_2_DONE:
-
 	JR 		MAIN_FRAME_DONE
 
 MAIN_FRAME_3:

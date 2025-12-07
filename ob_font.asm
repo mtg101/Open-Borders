@@ -180,8 +180,8 @@ OB_FONT_F:
     defb       1, 0, 0, 0
 
 OB_FONT_G:
-    defb       0, 1, 0, 0
-    defb       1, 0, 1, 0
+    defb       0, 1, 1, 0
+    defb       1, 0, 0, 0
     defb       1, 0, 0, 0
     defb       1, 0, 0, 0
     defb       1, 1, 1, 0
